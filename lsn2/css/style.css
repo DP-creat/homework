@@ -1,0 +1,27 @@
+.hi {
+  background-color: #555050;
+  width: 500px;
+}
+.hi__1 {
+  color: #fff;
+}
+.hi__2 {
+  color: #be8ed4;
+}
+.hi__square {
+  height: 100px;
+  width: 100px;
+  background-color: #b92020;
+}
+.element {
+  background-color: #a98edb;
+  width: 300px;
+  color: #a98edb;
+}
+.element__hi {
+  color: #000000;
+}
+.element__spam {
+  color: #fff;
+  background-color: #5916b1;
+}
