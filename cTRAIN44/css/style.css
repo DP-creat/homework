@@ -1,0 +1,35 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0px;
+}
+
+/* h2 {
+  line-height: -1;
+} */
+.overflow {
+  margin: 9px;
+  border: 0.5px solid #000;
+  border-radius: 38px 0px 0px 37px;
+  padding: 12px 6px;
+  max-height: 751px;
+  overflow: auto;
+  opacity: 0.87;
+  background-color: #61519b28;
+
+}
+
+.shadow {
+  display: inline-block;
+  padding: 24px 37px 53px 34px;
+  border: 0 solid #000;
+  border-radius: 38px;
+  font-size: 25px;
+  max-width: 375px;
+  /* max-height: 500px; */
+  box-shadow: inset 0px 0px 11px 2px #4b416e;
+  background-color: hsl(39, 28%, 58%);
+  margin: 0px 15px 23px 0px;
+}
