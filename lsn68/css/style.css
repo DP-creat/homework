@@ -1,0 +1,29 @@
+.position {
+  background-color: #000;
+  color: #fff;
+  height: 500vh;
+  font-size: 3rem;
+  
+}
+
+.position__rectangle {
+  position: fixed;
+  right: 50px;
+  bottom: 100px;
+  background-color: #fff;
+  min-height: 100px;
+  width: 100%;
+  border-radius: 15px;
+  width: 50vw;
+}
+
+.position__ball {
+  bottom: 50%;
+  position: relative;
+  bottom: 50px;
+  left: 100px;
+  background-color: #f00c0c;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
