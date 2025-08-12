@@ -87,15 +87,15 @@ body.overflow {
 }
 
 .sidebar__name {
-    color:#161814;
+    color:#0ceba8;
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 6px;
 }
 
 .sidebar__text {
-    color: #AFB1A7;
-    font-size: 13px;
+    color: #0aebdf;
+    font-size: 20px;
     font-weight: 400;
     line-height: 130%; /* 16.9px */
 }
@@ -289,4 +289,5 @@ li a {
     .sidebar__user {
         margin-left: 0;
     }
+
 }
