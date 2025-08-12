@@ -100,6 +100,13 @@ body.overflow {
     line-height: 130%; /* 16.9px */
 }
 
+.sidebar__text {
+  background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .sidebar__item {
     width: 372px;
 }
@@ -291,3 +298,4 @@ li a {
     }
 
 }
+
