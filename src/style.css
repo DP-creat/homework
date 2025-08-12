@@ -87,28 +87,24 @@ body.overflow {
 }
 
 .sidebar__name {
-    color:#0ceba8;
+    color:#161814;
     font-size: 24px;
     font-weight: 500;
     margin-bottom: 6px;
+}
 
 .sidebar__text {
-    color: #0aebdf;
+    color: #AFB1A7;
     font-size: 20px;
     font-weight: 400;
     line-height: 130%; /* 16.9px */
 }
-.sidebar__name {
-  background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.sidebar__text {
-  background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+
+.sidebar__name, .sidebar__text {
+    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .sidebar__item {
@@ -300,9 +296,4 @@ li a {
     .sidebar__user {
         margin-left: 0;
     }
-
 }
-
-
-
-
