@@ -47,8 +47,6 @@ body.overflow {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    height: 100vh;
-    width: 100vw;
 }
 
 
@@ -62,8 +60,6 @@ body.overflow {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    height: 100vh;
-    width: 100vw;
 }
 
 .container {
@@ -309,4 +305,5 @@ li a {
         margin-left: 0;
     }
 }
+
 
