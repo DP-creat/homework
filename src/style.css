@@ -42,8 +42,7 @@ body.overflow {
     padding: 40px 24px 40px 0;
     -ms-flex-negative: 0;
     flex-shrink: 0;
-    background-color: white;
-    background-image: url("../src/cosm-aside.jpg");
+    background: url("../src/cosm-aside.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -55,8 +54,7 @@ body.overflow {
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
-    background-color: #F4F4F4;
-    background-image: url("../src/cosm.jpg");
+    background: url("../src/cosm.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -305,6 +303,7 @@ li a {
         margin-left: 0;
     }
 }
+
 
 
 
