@@ -54,7 +54,7 @@ body.overflow {
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
-    background: url("../src/cosm.jpg");
+    background: url("../src/cosma.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -303,6 +303,7 @@ li a {
         margin-left: 0;
     }
 }
+
 
 
 
