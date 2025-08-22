@@ -43,7 +43,7 @@ body.overflow {
     -ms-flex-negative: 0;
     flex-shrink: 0;
     background: url("../src/cosm-aside.jpg");
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
@@ -106,13 +106,6 @@ body.overflow {
     line-height: 130%; /* 16.9px */
 }
 
-.sidebar__name, .sidebar__text {
-    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
 .sidebar__item {
     width: 372px;
 }
@@ -149,6 +142,13 @@ body.overflow {
     font-size: 48px;
     font-weight: 700;
     margin-bottom: 40px;
+}
+
+.sidebar__name, .sidebar__text, .content__title {
+    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .content__list {
@@ -303,6 +303,7 @@ li a {
         margin-left: 0;
     }
 }
+
 
 
 
