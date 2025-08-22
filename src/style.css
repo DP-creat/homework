@@ -184,7 +184,6 @@ li a {
     transition: all .3s;
     display: inline-block;
     padding: 12px 18px;
-    background-color: #fff;
     border-radius: 10px;
     border: 1px solid #DADEC9;
 }
@@ -295,6 +294,7 @@ li a {
         margin-left: 0;
     }
 }
+
 
 
 
