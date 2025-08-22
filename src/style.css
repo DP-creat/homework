@@ -136,7 +136,7 @@ body.overflow {
     margin-bottom: 40px;
 }
 
-.sidebar__name, .sidebar__text, .content__title, .sidebar__button, .content__list-item {
+.sidebar__name, .sidebar__text, .content__title, .sidebar__button {
     background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
     -webkit-background-clip: text;
     background-clip: text;
@@ -165,6 +165,7 @@ body.overflow {
     -webkit-transition: all .3s;
     -o-transition: all .3s;
     transition: all .3s;
+    color: #fff;
 }
 
 .content__list-item:hover,.content__list-diplom:hover {
@@ -294,6 +295,7 @@ li a {
         margin-left: 0;
     }
 }
+
 
 
 
