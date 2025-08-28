@@ -84,7 +84,6 @@ body.overflow {
     margin-left: 60px;
     margin-bottom: 100px;
     border-radius: 8px;
-    border: 1px solid #DADEC9;
 }
 
 .sidebar__name {
@@ -295,6 +294,7 @@ li a {
         margin-left: 0;
     }
 }
+
 
 
 
