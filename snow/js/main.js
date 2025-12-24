@@ -47,7 +47,7 @@ class Snowflake {
         this.speed = Math.random() * 0.5 + 0.3;
         this.angle = 0;
         this.spin = Math.random() * 0.02 - 0.01;
-        this.opacity = Math.random() * 0.5 + 0.2;
+        this.opacity = 0.9; // Соответствует вашему rgba(..., 0.9)
     }
     update() {
         this.y += this.speed;
@@ -55,7 +55,25 @@ class Snowflake {
         if (this.y > canvas.height) this.reset();
     }
     draw() {
-        drawSnowflakeShape(this.x, this.y, this.size, this.angle, 'white', this.opacity);
+        ctx.save();
+        
+        // Эффект тени (text-shadow) для Canvas:
+        // 1. Золотистое свечение
+        ctx.shadowBlur = 5; 
+        ctx.shadowColor = 'rgba(255, 215, 0, 0.8)';
+        
+        // 2. Второе (белое) свечение имитируем через отрисовку самой формы
+        // Мы вызываем общую функцию отрисовки, передавая белый цвет 0.9 прозрачности
+        drawSnowflakeShape(
+            this.x, 
+            this.y, 
+            this.size, 
+            this.angle, 
+            `rgba(255, 255, 255, ${this.opacity})`, 
+            this.opacity
+        );
+        
+        ctx.restore();
     }
 }
 
@@ -164,4 +182,5 @@ document.addEventListener('DOMContentLoaded', () => {
         star.style.animationDelay = Math.random() * 0.5 + 's';
         starsLayer.appendChild(star);
     }
+
 });
