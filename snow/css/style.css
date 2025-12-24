@@ -163,7 +163,7 @@ body, html {
     width: 100%;
     text-align: center;
     color: rgba(255, 255, 255, 0.9); /* Сделали ярче */
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Caveat', cursive;
     letter-spacing: 3px;
     font-size: 1.2rem;
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
@@ -203,9 +203,10 @@ body, html {
 
 /* Подзаголовок (Нота) */
 .personal-note {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Caveat', cursive;
     font-style: italic;
     font-size: 1.5rem;
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    color: #daba0b;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 2px 2px 4px rgba(0,0,0,0.5);
+
 }
