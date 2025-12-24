@@ -196,9 +196,9 @@ body, html {
 .main-title {
     font-family: 'Caveat', cursive;
     font-size: 4rem;
-    color: #ffd700;
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 20px;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 2px 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 /* Подзаголовок (Нота) */
@@ -206,7 +206,8 @@ body, html {
     font-family: 'Caveat', cursive;
     font-style: italic;
     font-size: 1.5rem;
-    color: #daba0b;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 2px 2px 4px rgba(0,0,0,0.5);
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
 
 }
+
