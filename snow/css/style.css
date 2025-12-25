@@ -1,9 +1,10 @@
 body, html {
   margin: 0; padding: 0; width: 100%; height: 100%;
   /* Убираем фон из body, он будет в #magic-world */
-  background: #5c1e79; 
+  background: #2c0d3a; 
   overflow: hidden; 
   font-family: sans-serif;
+  background: #010208 !important;
 }
 .galaxy-container {
   width: 100vw;
@@ -15,14 +16,26 @@ body, html {
   cursor: pointer;
 }
 #magic-world {
-    position: relative;
-    width: 100vw; height: 100vh;
-    /* Новый фон: синий градиент с золотым свечением снизу (как на картинке) */
+    position: absolute; /* Теперь это просто подложка */
+    inset: 0;
+    width: 100vw; 
+    height: 100vh;
+    /* Твой красивый сине-золотой фон */
     background: radial-gradient(circle at bottom center, 
-                rgba(255, 215, 0, 0.1) 0%,   /* Мягкий золотой свет */
-                rgba(0, 0, 100, 0.5) 40%,    /* Синий дым */
-                #13254d 100%);               /* Глубокий темно-синий */
-    overflow: hidden;
+                rgba(255, 215, 0, 0.2) 0%,   
+                rgba(0, 0, 100, 0.5) 40%,    
+                #13254d 100%);               
+    z-index: 0; /* Самый нижний слой */
+    transition: opacity 3s ease; /* Плавное исчезновение фона */
+}
+
+/* Когда этот класс добавится, исчезнет ТОЛЬКО фон, а не всё внутри */
+.magic-bg-fade {
+    opacity: 0 !important;
+}
+.fade-out {
+    opacity: 0;
+    visibility: hidden;
 }
 
 #mainCanvas { position: absolute; inset: 0; z-index: 1; }
@@ -210,4 +223,3 @@ body, html {
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
 
 }
-
