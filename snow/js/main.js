@@ -41,13 +41,16 @@ class Snowflake {
         this.y = Math.random() * canvas.height;
     }
     reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = -20;
-        this.size = Math.random() * 4 + 2;
-        this.speed = Math.random() * 0.5 + 0.3;
-        this.angle = 0;
-        this.spin = Math.random() * 0.02 - 0.01;
-        this.opacity = 0.9; // Соответствует вашему rgba(..., 0.9)
+    this.x = Math.random() * canvas.width;
+    this.y = -20;
+    this.size = Math.random() * 4 + 2;
+    // БЫЛО: Math.random() * 0.5 + 0.3
+    // СТАЛО: (медленнее и нежнее)
+    this.speed = Math.random() * 0.25 + 0.15; 
+    
+    this.angle = 0;
+    this.spin = Math.random() * 0.01 - 0.005; // Вращение тоже можно замедлить
+    this.opacity = 0.9;
     }
     update() {
         this.y += this.speed;
@@ -113,6 +116,7 @@ class FireworkSnowflake {
 
         this.life -= this.decay;
         this.angle += this.vx * 0.1;
+        
     }
 
     draw() {
@@ -133,7 +137,7 @@ class FireworkSnowflake {
 }
 
 // 4. Подготовка
-for (let i = 0; i < 120; i++) snowflakes.push(new Snowflake());
+for (let i = 0; i < 60; i++) snowflakes.push(new Snowflake());
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -158,14 +162,21 @@ window.addEventListener('click', (e) => {
     }
 
     clickCount++;
+    const magicWorld = document.getElementById('magic-world');
+    if (magicWorld) {
+        magicWorld.classList.add('magic-bg-fade');
+    }
+
+    // 2. Активируем сияние (оно проявится поверх черного фона body)
+    document.getElementById('main-container').classList.add('aurora-active');
+
+    // 3. Логика подсказок и желаний
     const wishes = document.getElementById('wishes');
     const hint = document.querySelector('.interaction-hint');
     
     if (hint) hint.style.opacity = '0';
     if (clickCount === 2) wishes.classList.add('show');
     if (clickCount === 5) wishes.classList.remove('show');
-
-    document.getElementById('main-container').classList.add('aurora-active');
 });
 
 // 6. Звезды
@@ -182,5 +193,5 @@ document.addEventListener('DOMContentLoaded', () => {
         star.style.animationDelay = Math.random() * 0.5 + 's';
         starsLayer.appendChild(star);
     }
-
 });
+
