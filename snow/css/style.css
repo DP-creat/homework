@@ -1,0 +1,191 @@
+body, html {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  /* Убираем фон из body, он будет в #magic-world */
+  background: #2c0d3a; 
+  overflow: hidden; 
+  font-family: sans-serif;
+  background: #010208 !important;
+}
+.galaxy-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+#magic-world {
+    position: absolute; /* Теперь это просто подложка */
+    inset: 0;
+    width: 100vw; 
+    height: 100vh;
+    /* Твой красивый сине-золотой фон */
+    background: radial-gradient(circle at bottom center, 
+                rgba(255, 215, 0, 0.2) 0%,   
+                rgba(1, 2, 8, 0.5) 40%,    
+                rgb(1, 2, 8) 100%);               
+    z-index: 0; /* Самый нижний слой */
+    transition: background 1.5s ease; /* Плавное исчезновение фона */
+    animation: flame-pulse 4s infinite alternate ease-in-out;
+}
+@keyframes flame-pulse {
+    0% { filter: brightness(0.8) blur(2px); transform: scale(1); }
+    100% { filter: brightness(1.1) blur(0px); transform: scale(1.02); }
+}
+
+.fire-active {
+    animation: fire-flicker 4s infinite alternate, fire-color-cycle 10s infinite linear;
+}
+@keyframes fire-flicker {
+    0%, 100% { opacity: 0.7; transform: scale(1); filter: blur(40px); }
+    50% { opacity: 1; transform: scale(1.05); filter: blur(60px); }
+}
+@keyframes fire-color-cycle {
+    0%   { background: radial-gradient(circle at bottom, rgba(255, 69, 0, 0.4) 0%, transparent 30%); }
+    25%  { background: radial-gradient(circle at bottom, rgba(255, 215, 0, 0.4) 0%, transparent 30%); }
+    50%  { background: radial-gradient(circle at bottom, rgba(180, 100, 255, 0.4) 0%, transparent 30%); }
+    75%  { background: radial-gradient(circle at bottom, rgba(0, 242, 255, 0.4) 0%, transparent 30%); }
+    100% { background: radial-gradient(circle at bottom, rgba(255, 69, 0, 0.4) 0%, transparent 30%); }
+}
+/* Когда этот класс добавится, исчезнет ТОЛЬКО фон, а не всё внутри */
+.magic-bg-fade {
+    opacity: 0 !important;
+}
+.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#mainCanvas { position: absolute; inset: 0; z-index: 1; }
+
+.hidden-wishes {
+    /* ... остальное без изменений ... */
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 2s ease;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+.show { opacity: 1 !important; }
+
+/* Золотистый текст для поздравления */
+.main-title { font-size: 2.5rem; color: #ffd700; margin-bottom: 10px; }
+/* Звезды */
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: twinkle var(--duration) infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Северное сияние - магические ленты */
+.aurora-wrapper {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 4s ease;
+  z-index: 1;
+  filter: blur(80px); /* Очень сильное размытие */
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Каждый слой - широкая лента сияния с плавной анимацией */
+
+.click-hint {
+  color: rgba(255, 255, 255, 0.4);
+  font-family: sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 10;
+}
+.hidden {
+  opacity: 0;
+  transition: opacity 3s ease; 
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7); /* Изначально полупрозрачный белый */
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  z-index: 10;
+  pointer-events: none;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.show-message {
+  opacity: 0.7 !important; /* Надпись будет полупрозрачной */
+}
+.fade-out {
+  opacity: 0 !important;
+  transition: opacity 4s ease; /* Исчезает чуть медленнее и печальнее */
+}
+@import url('fonts.googleapis.com');
+
+/* Начальная подсказка */
+.interaction-hint {
+    position: absolute;
+    bottom: 20%;
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9); /* Сделали ярче */
+    font-family: 'Caveat', cursive;
+    letter-spacing: 3px;
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+    z-index: 15;
+    transition: opacity 1.5s ease;
+    pointer-events: none;
+}
+
+/* Блок с поздравлением */
+.hidden-wishes {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 20;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 2s ease, visibility 2s;
+    pointer-events: none;
+    width: 90%;
+}
+
+.hidden-wishes.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Заголовок (Рождество) */
+.main-title {
+    font-family: 'Caveat', cursive;
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* Подзаголовок (Нота) */
+.personal-note {
+    font-family: 'Caveat', cursive;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+
+}
