@@ -16,17 +16,12 @@ body, html {
   cursor: pointer;
 }
 #magic-world {
-    position: absolute; /* Теперь это просто подложка */
-    inset: 0;
-    width: 100vw; 
+    position: relative;
+    width: 100vw;
     height: 100vh;
-    /* Твой красивый сине-золотой фон */
-    background: radial-gradient(circle at bottom center, 
-                rgba(255, 215, 0, 0.2) 0%,   
-                rgba(0, 0, 100, 0.5) 40%,    
-                #13254d 100%);               
-    z-index: 0; /* Самый нижний слой */
-    transition: opacity 3s ease; /* Плавное исчезновение фона */
+    /* Глубокий синий градиент с золотистым свечением снизу */
+    background: radial-gradient(circle at 50% 100%, #3a2b02 0%, #050a15 50%, #010208 100%);
+    overflow: hidden;
 }
 
 /* Когда этот класс добавится, исчезнет ТОЛЬКО фон, а не всё внутри */
@@ -223,3 +218,4 @@ body, html {
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
 
 }
+
