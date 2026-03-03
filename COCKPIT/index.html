@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>DP-CREAT | COCKPIT</title>
+  <link rel="stylesheet" href="css/style.css"> <!-- Твой неоновый стиль -->
+
+</head>
+
+<body>
+  <div class="bg-glow"></div>
+
+  <main class="arc-hud">
+    <header class="hud-header">
+      <p class="hub-subtitle">//ARC-9 INTERFACE</p>
+    </header>
+
+    <div class="interface">
+
+      <div class="laser-cross" onclick="deepResetCounters()" title="DEEP RESET">
+        <div class="line-v"></div>
+        <div class="line-h"></div>
+      </div>
+
+      <section class="hud-panel clicker">
+        <span class="panel-tag">L0 // clickerCraft </span>
+        <div class="creator-form">
+          <input type="text" id="cell-name" placeholder="Название (напр. Caffeine)">
+          <input type="number" id="cell-limit" placeholder="Лимит (напр. 5)">
+          <button onclick="createNewCell()">GENERATE UNIT</button>
+        </div>
+      </section>
+
+      <div class="core-scanner">
+        <div class="scan-ring"></div>
+        <div class="core-data">
+          <span class="core-label">SYNC STATUS</span>
+          <span class="core-value" id="sync-percent">Nn%</span>
+        </div>
+      </div>
+
+      <section class="hud-panel kinetic">
+        <span class="panel-tag">L0 // KINETIC TARGETS</span>
+        <div class="target-input">
+          <input type="text" id="ex-input" placeholder="NEW kinetic">
+          <button onclick="logExercise()">Fix</button>
+        </div>
+      </section>
+    </div>
+    <!-- Центральное Ядро -->
+    <div class="cockpit-grid">
+      <!-- панель: BIO-HARDWARE -->
+      <section class="hud-panel">
+        <span class="panel-tag">L0 // BIO-HARDWARE</span>
+        <div class="battery-group">
+
+          <!-- <div class="battery-cell" onclick="incrementHardware('nameClicker')">
+            <div class="mini-reset" onclick="resetSingleHardware(event, 'nameClicker')" title="RESET UNIT">
+              <div class="m-line-v"></div>
+              <div class="m-line-h"></div>
+            </div>
+            <svg class="cell-svg" width="140" height="140">
+              <circle class="circle-bg" cx="70" cy="70" r="60"></circle>
+              <circle id="circle-Tyrosine" class="circle-progress" cx="70" cy="70" r="60"></circle>
+            </svg>
+            <div class="cell-header">
+              <div class="cell-label">nameClicker</div>
+              <div class="cell-val" id="count-nameClicker">0</div>
+            </div>
+            <div class="cell-bar">
+              <div id="bar-nameClicker" class="fill"></div>
+            </div>
+            <div class="time-stamps" id="stamps-nameClicker" style="display:none;">
+            </div>
+
+            <button class="view-log-btn" onclick="toggleStamps(event, 'nameClicker')">SHOW LOGS</button>
+          </div> -->
+        </div>
+      </section>
+    </div>
+    <div id="exercise-log" class="hud-log"></div>
+
+    <button class="reset-btn" onclick="hardResetAll()">NUCLEAR RESET</button>
+  </main>
+  <script src="js/cockpit.js"></script>
+</body>
+
+</html>

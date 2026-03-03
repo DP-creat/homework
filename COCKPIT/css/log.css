@@ -1,0 +1,24 @@
+
+.battery-cell {
+    position: relative;
+    /* background: rgba(255, 255, 255, 0.03); */
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 100px;
+    cursor: pointer;
+    border: 2.5px solid var(--cyan);
+    border-image-slice: 1;
+    /* background: #02040a99; */
+    /* Полупрозрачный фон внутри */
+    /* backdrop-filter: blur(10px); */
+    transition: filter 0.2s ease;
+}
+
+.battery-cell:hover {
+    filter: drop-shadow(0 0 10px var(--cyan)) contrast(1.2);
+}
+
+.battery-cell:hover {
+    /* background: rgba(0, 242, 255, 0.1); */
+    /* transform: translateX(1px); */
+}
