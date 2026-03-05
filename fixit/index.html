@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>DP-CREAT | COCKPIT</title>
+  <link rel="stylesheet" href="css/style.css"> <!-- Твой неоновый стиль -->
+
+</head>
+
+<body>
+  <div class="bg-glow"></div>
+
+  <main class="arc-hud">
+
+    <header class="hud-header">
+      <nav class="tectonic-nav">
+        <button class="lava-btn" onclick="togglePanel('kinetic')">log it<div class="cracks"></div></button>
+        <button class="lava-btn" onclick="togglePanel('clicker')">units<div class="cracks"></div></button>
+        <button class="lava-btn" onclick="toggleCockpit()">cockpit<div class="cracks"></div></button>
+      </nav>
+      <div class="core-scanner">
+        <div class="scan-ring"></div>
+        <div class="core-data">
+          <span class="core-label">SYNC STATUS</span>
+          <span class="core-value" id="sync-percent">Nn%</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="logo-stack">
+          <div class="header__title">
+            <h1 class="hub-title">DP-Creat</h1>
+            <div class="laser-cross" onclick="deepResetCounters()" title="DEEP RESET"><div class="line-v"></div><div class="line-h"></div></div>
+            <p class="hub-subtitle">INTERFACE //ARC-9</p>
+          </div>
+          <!-- Теперь крестик будет строго под текстом -->
+          
+        </div>
+      </div>
+    </header>
+
+    <div class="interface">
+      <div class="hud-panel kinetic">
+        <span class="panel-tag">L0 // KINETIC TARGETS</span>
+        <div class="target-input">
+          <input type="text" id="ex-input" placeholder="NEW kinetic">
+          <button onclick="logExercise()">Fix</button>
+        </div>
+      </div>
+
+      <section class="hud-panel clicker">
+        <span class="panel-tag">L0 // clickerCraft </span>
+        <div class="creator-form">
+          <input type="text" id="cell-name" placeholder="Название (напр. Caffeine)">
+          <input type="number" id="cell-limit" placeholder="Лимит (напр. 5)">
+          <button onclick="createNewCell()">GENERATE UNIT</button>
+        </div>
+      </section>
+
+      <section class="hud-panel cockpit">
+        <span class="panel-tag">L0 // Clickers</span>
+        <div class="battery-group">
+        </div>
+
+      </section>
+
+
+    </div>
+    <!-- Центральное Ядро -->
+    <div class="cockpit-grid">
+      <!-- панель: BIO-HARDWARE -->
+
+    </div>
+
+    <div id="exercise-log" class="hud-log"></div>
+
+    <button class="reset-btn" onclick="hardResetAll()">NUCLEAR RESET</button>
+
+  </main>
+
+  <script src="js/cockpit.js"></script>
+
+</body>
+
+</div>
+
+
+
+</html>
