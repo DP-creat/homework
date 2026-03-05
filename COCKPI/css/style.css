@@ -1,0 +1,732 @@
+/* base */
+@import "./blocks/normalize.css";
+@import "./blocks/vars.css";
+@import "./blocks/globals.css";
+
+/* blocks */
+@import "./blocks/menu.css";
+
+
+body {
+    margin: 0;
+    background-color: var(--bg-cos);
+    color: #fff;
+    font-family: 'Inter', 'Monospace', sans-serif;
+    overflow-x: hidden;
+}
+input,
+button {
+    background: #111;
+    color: #fff;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 5px;
+}
+.arc-hud {
+    position: relative;
+    margin: 0 auto;
+    padding: 40px 200px;
+    min-height: 100vh;
+    background: radial-gradient(circle at center, #6ad8d8 -300%, var(--bg-cos) 100%);
+    
+}
+
+/* -----ПАНЭЛЬ-------------------- */
+
+.hud-panel {
+    /* 1. Скрытое состояние */
+    position: absolute; /* ПАНЕЛИ ЛЕЖАТ ДРУГ НА ДРУГЕ */
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    height: 0;
+    width: 2px;
+    
+    border-left: 2px solid var(--cyan);
+    background: linear-gradient(90deg, rgba(0, 242, 255, 0.05) 0%, transparent 100%);
+    z-index: 1;
+
+    /* 2. ЛОГИКА ЗАКРЫТИЯ (Влево -> Вверх) */
+    transition: 
+        opacity 0.3s ease,
+        width 0.4s 0s cubic-bezier(0.4, 0, 0.2, 1), 
+        height 0.4s 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s 0.8s;
+}
+.hud-panel.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10; /* Активная панель всегда сверху */
+    
+    /* 3. ФИНАЛЬНЫЕ РАЗМЕРЫ */
+    height: 400px; 
+    width: 1000px; 
+
+    /* 4. ЛОГИКА ОТКРЫТИЯ (Вниз -> Вправо) */
+    transition: 
+        opacity 0.3s ease,
+        height 0.5s 0s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.5s 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s 0s;
+}
+
+/* Контент внутри */
+.hud-panel > * {
+    opacity: 0;
+    transition: opacity 0.3s 0s;
+}
+
+.hud-panel.active > * {
+    opacity: 1;
+    transition: opacity 0.5s 1s ease; /* Появляется после раскрытия */
+}
+/* Этап 1: Лазер прочерчивает линию вниз */
+@keyframes laser-down {
+    from { height: 0; opacity: 0; border-left-width: 2px; }
+    to { height: 400px; opacity: 1; border-left-width: 2px; }
+}
+
+/* Этап 2: Панель вытягивается вправо из линии */
+@keyframes panel-spread {
+    from { width: 0; }
+    to { width: 1000px; }
+}
+
+
+@keyframes fade-in-content {
+    to { opacity: 1; }
+}
+
+.panel-tag {
+    display: block;
+    color: var(--cyan);
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+/* ------------------------------------------ */
+
+.hud-header {
+    text-align: end;
+    margin-bottom: 5px;
+    position: relative;
+    display: flex;
+    
+
+}
+/* .header__title {
+    display: block;
+} */
+.hub-title {
+    letter-spacing: 5px;
+    font-weight: 900;
+    /* text-transform: uppercase; */
+    margin: 0;
+    text-shadow: 0 0 15px var(--cyan);
+}
+
+.hub-subtitle {
+    color: var(--cyan);
+    font-size: 10px;
+    opacity: 0.7;
+    letter-spacing: 2px;
+}
+
+/* ------===================================================---- */
+
+.interface {
+    position: relative;
+    min-height: 500px; /* Резервируем место под раскрытую панель */
+}
+
+/* --------- */
+
+.laser-cross {
+    position: absolute;
+    top: 5vh;
+    right: 16.1vh;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 100;
+    opacity: 0.4;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.laser-cross:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+    filter: drop-shadow(0 0 8px var(--cyan));
+}
+.line-v, .line-h {
+    position: absolute;
+    background: var(--cyan);
+    border-radius: 2px;
+}
+
+/* Вертикальная линия */
+.line-v {
+    left: 11px;
+    top: 0;
+    width: 2px;
+    height: 24px;
+}
+
+/* Горизонтальная линия */
+.line-h {
+    top: 11px;
+    left: 0;
+    width: 24px;
+    height: 2px;
+}
+
+/*----------- Центральное Кольцо (Сканер) ----------------*/
+
+.core-scanner {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 50px;
+    border: 2px solid var(--glass-border);
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 40px rgba(0, 242, 255, 0.05);
+}
+.scan-ring {
+    position: absolute;
+    inset: -10px;
+    border: 2px solid var(--cyan);
+    border-radius: 50%;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    animation: rotate-ring 4s linear infinite;
+}
+.core-data{
+    display: flex;
+    gap: 10px;
+}
+.core-label {
+    font-size: 9px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+}
+.core-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 15px var(--cyan);
+}
+
+/* -----------KINETIC TARGETS----------------- */
+
+.kinetic {
+    
+}
+/* Логи и ввод (Kinetics) */
+.target-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.target-input input {
+    flex: 1;
+    background: #000;
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    padding: 10px;
+    outline: none;
+}
+
+.target-input button {
+    background: var(--cyan);
+    color: #000;
+    border: none;
+    padding: 0 20px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+/* ------------ГРИД КЛИКЕРОВ--------------- */
+.cockpit-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    /* width: 100%; */
+    padding: 20px;
+}
+.battery-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+/* 1. Основа ячейки */
+.battery-cell {
+    position: relative;
+    width: 140px; 
+    height: 140px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: visible; /* ВАЖНО: разрешаем выход иконок наружу */
+}
+.battery-cell:hover {
+    box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.1), 0 0 20px rgba(0, 242, 255, 0.2);
+    border-color: var(--cyan);
+    filter: drop-shadow(0 0 15px var(--cyan));
+}
+/* 2. Контент в центре */
+.cell-header {
+    position: relative;
+    z-index: 5;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-log-btn {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 8px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.view-log-btn:hover {
+    color: var(--cyan);
+}
+/* 3. SVG Слой */
+.cell-svg {
+    /* position: absolute;
+    top: 0;
+    left: 0; */
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg); /* Чтобы прогресс шел с 12 часов */
+}
+.cell-label {
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.cell-val {
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 10px var(--cyan);
+}
+
+
+
+/* =----- */
+.mini-reset {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    /* Скрыт по умолчанию */
+    transition: 0.3s;
+}
+
+.battery-cell:hover .mini-reset {
+    opacity: 0.4;
+}
+
+.mini-reset:hover {
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 5px var(--cyan));
+}
+
+.m-line-v {
+    position: absolute;
+    left: 5px;
+    width: 1.5px;
+    height: 12px;
+    background: var(--cyan);
+}
+
+.m-line-h {
+    position: absolute;
+    top: 5px;
+    width: 12px;
+    height: 1.5px;
+    background: var(--cyan);
+}
+/* -------------- */
+
+/*-------------- окно Логи-------------- */
+.hud-log {
+    height: 200px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    border: 1px solid var(--glass-border);
+    font-family: 'Monospace', sans-serif;
+    font-size: 12px;
+}
+.log-entry {
+    font-family: monospace;
+    color: var(--accent);
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 242, 255, 0.05);
+    padding-bottom: 4px;
+}
+
+
+/* Скроллбар для логов */
+.hud-log::-webkit-scrollbar {
+    width: 4px;
+}
+.hud-log::-webkit-scrollbar-thumb {
+    background: var(--cyan);
+}
+
+/* ----------reset-btn----------- */
+
+.reset-btn {
+    width: 100%;
+    margin-top: 20px;
+    background: transparent;
+    border: 1px solid #ff0055;
+    color: #ff0055;
+    padding: 10px;
+    font-size: 10px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.reset-btn:hover {
+    opacity: 1;
+    background: rgba(255, 0, 85, 0.1);
+}
+/* --------------------------------- */
+/* Анимации */
+@keyframes rotate-ring {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+/* -------------------------------- */
+
+/* 5. ЛОГИ (ВСПЛЫВАЮЩЕЕ ОКНО) */
+.time-stamps {
+    position: absolute;
+    top: 110%; /* СТРОГО ПОД КРУГОМ */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0a0a0a;
+    border: 1px solid var(--cyan);
+    padding: 8px;
+    border-radius: 4px;
+    z-index: 100;
+    width: 140px;
+    display: none;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    box-shadow: 0 5px 20px #000;
+}
+
+.time-stamps.active {
+    display: flex;
+}
+
+.stamp {
+    font-size: 8px;
+    color: var(--cyan);
+    background: rgba(0, 242, 255, 0.1);
+    padding: 2px 4px;
+    border: 1px solid rgba(0, 242, 255, 0.2);
+}
+/* Кнопка удаления (Красный минус слева) */
+.delete-unit {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+    z-index: 20;
+    opacity: 0.4;
+    transition: 0.3s;
+}
+.delete-unit:hover { opacity: 1; filter: drop-shadow(0 0 5px #ff0055); }
+.d-line { width: 12px; height: 1.5px; background: #ff0055; position: absolute; top: 5px; }
+
+.creator-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.creator-form input {
+    background: #000;
+    border: 1px solid var(--glass-border);
+    color: var(--cyan);
+    padding: 12px;
+    font-family: monospace;
+    outline: none;
+}
+
+.creator-form button {
+    background: var(--cyan);
+    color: #000;
+    border: none;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.creator-form button:hover {
+    box-shadow: 0 0 20px var(--cyan);
+}
+.cell-svg, .cell-header, .scan-ring {
+    pointer-events: none; /* Пропускает клик сквозь себя */
+}
+.battery-cell, .mini-reset, .view-log-btn, .reset-btn, button {
+    pointer-events: auto; /* Эти элементы должны принимать клик */
+}
+.x-icon {
+    position: absolute;
+    width: 20px; /* Чуть увеличим для удобства клика */
+    height: 20px;
+    cursor: pointer;
+    z-index: 30;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6); /* Фон-подложка для четкости */
+    border-radius: 50%;
+}
+
+/* Показываем при наведении на карточку */
+.battery-cell:hover .x-icon {
+    opacity: 0.8;
+}
+/* Эффект при наведении на сам значок */
+.x-icon:hover {
+    opacity: 1 !important;
+    animation: spin-icon 1.5s linear infinite;
+     /* Постоянное вращение */
+}
+
+/* Позиции */
+/* Позиционируем ВНЕ границ круга 140px */
+.mini-reset { 
+    top: -2px; 
+    right: -2px; 
+    transform: rotate(90deg); /* Поворот правого ушка наружу */
+    border: 1px solid var(--cyan);
+    box-shadow: 0 0 10px var(--cyan); /* Ореол */
+}
+.delete-unit { 
+    top: -2px; 
+    left: -2px; 
+    transform: rotate(-45deg); /* Поворот левого ушка наружу */
+    border: 1px solid #ff0055;
+    box-shadow: 0 0 10px #ff0055; /* Ореол */
+}
+
+/* Линии Зеленого Х */
+.mini-reset div { background: var(--cyan); shadow: 0 0 5px var(--cyan); }
+.mini-reset:hover { filter: drop-shadow(0 0 8px var(--cyan)); }
+
+/* Линии Красного Х */
+.delete-unit div { background: #ff0055; shadow: 0 0 5px #ff0055; }
+.delete-unit:hover { filter: drop-shadow(0 0 8px #ff0055); }
+
+
+.m-line-v {position: absolute; width: 2px; height: 10px; background: var(--cyan); }
+.m-line-h {position: absolute; width: 10px; height: 2px; background: var(--cyan); }
+.d-line-v {position: absolute; width: 2px; height: 10px; background: #ff0055; }
+.d-line-h {position: absolute; width: 10px; height: 2px; background: #ff0055; }
+
+
+
+/* Анимация вращения */
+@keyframes spin-icon {
+    from { transform: rotate(45deg); }
+    to { transform: rotate(405deg); }
+}
+
+
+/* ------часы в кликере------- */
+.circle-wrapper {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+.log-clock {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.log-clock.active {
+    opacity: 1;
+}
+.circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 6;
+}
+.circle-progress {
+    fill: none;
+    stroke: var(--cyan);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 377;
+    stroke-dashoffset: 377; /* Это меняет JS */
+    transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 0 8px var(--cyan));
+}
+/* Точка времени на круге */
+.time-dot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--glass-border);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
+    left: 50%;
+    top: 50%;
+    margin: -3px; 
+}
+
+/* Подпись времени рядом с точкой */
+.time-dot::after {
+    content: attr(data-time);
+    position: absolute;
+    font-size: 10px;
+    color: var(--cyan);
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-family: monospace;
+}
+
+.cloud-nav {
+    position: absolute;
+    right: -120px; /* Справа от сканера */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cloud-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    color: var(--cyan);
+    padding: 15px 25px;
+    border-radius: 50px; /* Овальные/пушистые */
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 2px;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cloud-btn:hover {
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.2);
+    transform: translateX(10px) scale(1.05);
+    color: #fff;
+}.cloud-nav {
+    position: absolute;
+    left: 220px; /* Выносим вправо от центрального кольца */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 100;
+}
+
+.cloud-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--cyan);
+    padding: 12px 24px;
+    border-radius: 40px; /* Округлые, пушистые формы */
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.05);
+}
+
+.cloud-btn:hover {
+    background: rgba(0, 242, 255, 0.1);
+    box-shadow: 0 0 25px rgba(0, 242, 255, 0.3);
+    transform: scale(1.1) translateX(5px);
+    color: #fff;
+}
+.cloud-nav {
+    position: absolute;
+    right: -140px; /* Вынос вправо от сканера */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cloud-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    color: var(--cyan);
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
+}
+.cloud-btn:hover {
+    background: rgba(0, 242, 255, 0.1);
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1);
+    transform: scale(1.1) translateX(10px);
+}

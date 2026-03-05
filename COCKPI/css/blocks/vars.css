@@ -1,0 +1,37 @@
+
+
+:root {
+    --cyan: #00f2ff;
+    --magenta: #ff00ff;
+    --glass: #00f2ff0d;
+    --glass-border: #00f2ff33;
+    --bg: #050505;
+    --bg-cos: #02040a;
+    --accent: #00f2ff;
+    --orange: #ff4e00;
+    --blue: #0a1128;
+    --Indigo: #1c1c54;
+    --violet: #5e3a8c;
+    --golden: #ffcc00;
+    --red: #ff0000;
+    --purple: #4a0e4e;
+
+
+    --glass-inher: inherit;
+    --glass-transp: transparent; /* Отменяет заливку, виден фон родителя, Скрывает 
+    
+    /* Для совместимости с твоим старым кодом */
+}
+
+
+/* Deep Blue: #0a1128
+Midnight Indigo: #1c1c54
+Sky Violet: #5e3a8c
+Golden Hour: #ffcc00
+Sunset Orange: #ff4e00
+Burning Red: #ff0000
+Deep Purple: #4a0e4e
+Dark Abyss: #050505 (Твой фон) */
+
+/* background: radial-gradient(circle at center, #0a151a 0%, #050505 100%); */
+/* background: linear-gradient(180deg, #0c1445 0%, #00f2ff 40%, #ff00ff 70%, #ff4e00 100%); */
