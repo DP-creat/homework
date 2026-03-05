@@ -1,0 +1,86 @@
+.hub-container {
+    height: 100vh;
+    /* Внедряем твою формулу прямо сюда */
+    width: min(var(--container-width), 100% - var(--container-padding) * 2);
+    margin-inline: auto; /* Центрируем */
+    padding-top: clamp(20px, 8vw, 80px);
+    padding-left: clamp(20px, 8vw, 100px); 
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+.panorama-grid {
+    width: 100%;
+    margin-bottom: clamp(40px, 5vw, 80px);
+    display: flex;
+    flex-direction: initial;
+    gap: clamp(16px, 3vw, 40px);
+}
+
+.card.panorama {
+    width: clamp(200px, 15vw, 300px); 
+    
+    /* Запрещаем им растягиваться на всю ширину ряда */
+    flex: 0 0 auto;
+
+    min-height: clamp(90px, 10vh, 120px); 
+    margin-bottom: clamp(40px, 5vw, 80px);
+    
+    display: block;
+    min-width: 0;
+}
+.content-wrapper {
+    display: flex;
+    justify-content: flex-end; /* ПРИЖИМАЕМ ВПРАВО */
+    flex: 1; /* Занимает все оставшееся место снизу */
+    min-height: 0; /* Важно для работы скролла внутри flex */
+    width: 100%;
+    overflow: hidden; /* Чтобы сам wrapper не скроллился, только список внутри */
+}
+.hub-links {
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;    
+    /* ВКЛЮЧАЕМ ИЗОЛИРОВАННЫЙ СКРОЛЛ */
+    overflow-y: auto; 
+    height: 100%; /* Занимает всю высоту content-wrapper */
+    scrollbar-gutter: stable; /* Чтобы верстку не дергало при появлении скролла */
+    padding-bottom: 40px; /* Чтобы нижняя карточка не прилипала к краю */
+    padding-right: 10px; /* Место для кастомного скролла */
+    -webkit-overflow-scrolling: touch; 
+}
+.hub-links::-webkit-scrollbar {
+    width: 10px;
+}
+.hub-links::-webkit-scrollbar-thumb {
+    background: var(--accent); /* Твой зеленый неон */
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--accent);
+}
+.hub-title {
+    font-size: clamp(24px, 5vw, 32px);
+    letter-spacing: 4px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.hub-footer {
+    margin-top: 80px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+}
+
+
+.hub-subtitle {
+    color: var(--text-dim);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+

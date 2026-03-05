@@ -1,0 +1,127 @@
+body {
+    height: 100vh;
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    overflow: hidden;
+}
+
+.card {
+    position: relative;
+    border-radius: 20px;
+    z-index: 1;
+    overflow: hidden; /* Теперь можно оставить, если нужно */
+    transition: transform 0.3s ease;
+    display: block;
+    flex-shrink: 0; /* Запрещает карточке уменьшаться */
+    min-height: 120px; /* Минимальная высота, чтобы не схлопывались */
+    
+    /* Убираем стандартный border, заменяем его на padding */
+    padding: 1px; /* ЭТО ШИРИНА ВАШЕГО БОРДЕРА */
+    background: rgba(255, 255, 255, 0.08); /* Цвет бордера в обычном состоянии */
+}
+/* Когда карточка активна — меняем фон (который просвечивает сквозь padding) */
+.card.active {
+    background: transparent; /* Очищаем статичный бордер */
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.2);
+}
+
+/* "Закатное" свечение активируется классом .active через JS */
+.card::before {
+    content: '';
+    position: absolute;
+
+    /* inset: -4px;
+    background: conic-gradient(from 0deg, #ff0080, #ff8c00, #ffd700, #8a2be2, #ff0080);
+    z-index: -2;
+    opacity: 0;
+    filter: blur(15px);
+    transition: opacity 1s ease; Медленно разгорается после взрыва */
+
+    /* Центрируем градиент, чтобы он был больше карточки и вращался */
+    inset: -50%; 
+    background: conic-gradient(from 0deg, #ff0080, #ff8c00, #ffd700, #8a2be2, #ff0080);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    
+}
+
+.card.active::before {
+    opacity: 1;
+    animation: sunset-spin 6s linear infinite;
+}
+
+.card-inner {
+    position: relative;
+    background: #050505; /* Основной фон карты */
+    border-radius: 19px; /* На 1px меньше, чем у родителя */
+    padding: 24px;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+.card-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;       /* Самый верхний слой для искр */
+    pointer-events: none; /* ПРОПУСКАЕТ КЛИКИ И НАВЕДЕНИЕ СКВОЗЬ СЕБЯ */
+}
+@keyframes sunset-spin {
+    from { transform: rotate(0deg) scale(1.5); }
+    to { transform: rotate(360deg) scale(1.5); }
+}
+.card-label {
+    font-size: 10px;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.card-title {
+    font-size: 20px;
+    margin-bottom: 6px;
+    color: var(--text-main);
+}
+
+.card-desc {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.4;
+}
+
+/* ================================================== */
+.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(1);
+}
+/* -------------------------- */
+@media (max-width: 1024px) {
+    .hub-container {
+        margin-left: 0;
+        margin: 0 auto;
+        align-items: center;
+        padding: 40px 20px;
+    }
+    .content-wrapper {
+        justify-content: center;
+    }
+    .side-utils {
+        flex-direction: row;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
