@@ -1,0 +1,78 @@
+.header {
+}
+.header__container {
+    /* position: relative; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* width: 100%; */
+    padding: 0 40px;
+    /* Высота как у сканера */
+    gap: 60px;
+    margin-block: 5px;
+}
+/* ------------------------------------ */
+
+.header__title {
+    text-align: right;
+    margin: 0;
+}
+
+.hub-title {
+    letter-spacing: 5px;
+    font-weight: 900;
+    /* text-transform: uppercase; */
+    margin: 0;
+    text-shadow: 0 0 15px var(--cyan);
+}
+.hub-subtitle {
+    color: var(--cyan);
+    font-size: 10px;
+    opacity: 0.7;
+    letter-spacing: 2px;
+}
+
+
+/* --------------------------------------------------------- */
+
+.laser-cross {
+    position: relative;
+    /* ВАЖНО: меняем absolute на relative */
+    top: auto;
+    right: auto;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: rotate(45deg);
+}
+
+.laser-cross:hover {
+    opacity: 1;
+    transform: rotate(225deg);
+    filter: drop-shadow(0 0 8px var(--cyan));
+}
+
+.line-v, .line-h {
+    position: absolute;
+    background: var(--cyan);
+    border-radius: 2px;
+}
+
+/* Вертикальная линия */
+.line-v {
+    left: 11px;
+    top: 0;
+    width: 2px;
+    height: 24px;
+}
+
+/* Горизонтальная линия */
+.line-h {
+    top: 11px;
+    left: 0;
+    width: 24px;
+    height: 2px;
+}

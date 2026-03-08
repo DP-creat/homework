@@ -1,0 +1,46 @@
+:root {
+    /* font */
+    --font-body: "ShareTechMono", sans-serif;
+    --font-text: "ShareTech", sans-serif;
+    --font-size-text: 16.8px;
+
+    /* colors */
+    --bg: #050505;
+    --bg-cos: #02040a;
+    --accent: rgb(255, 255, 255);
+
+    --glass: #00f2ff0d;
+    --glass-border: #00f2ff33;
+    --glass-inher: inherit;
+    --glass-transp: transparent;
+    
+    --cyan: #00f2ff;
+
+    --red: #ff0000;
+    --red-2: #ff0055;
+
+    --orange: #ff4e00;
+    --blue: #0a1128;
+    --Indigo: #1c1c54;
+    --violet: #5e3a8c;
+    --magenta: #ff00ff;
+    --golden: #ffcc00;
+    --golden-2: #ffd700;
+    --purple: #4a0e4e;
+
+ /* container */
+    --container-width: 1294px;
+    --container-padding: 15px;
+
+    /* transition */
+    --transition-time: 0.2s;
+
+    /* layers */
+    --layer-0: -1;
+    --layer-1: 1;
+    --layer-2: 2;
+    --layer-3: 3;
+    --layer-4: 4;
+}
+/* background: radial-gradient(circle at center, #0a151a 0%, #050505 100%); */
+/* background: linear-gradient(180deg, #0c1445 0%, #00f2ff 40%, #ff00ff 70%, #ff4e00 100%); */

@@ -1,0 +1,77 @@
+.log {
+}
+.container {
+}
+
+.hud-log {
+    /* 1. СОСТОЯНИЕ "В ОДНУ СТРОКУ" */
+    height: 36px; /* Примерно высота одной строки с паддингами */
+    overflow-y: hidden; /* Скрываем остальные логи */
+    
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 2px 8px;
+    border: 1px solid var(--glass-border);
+    border-bottom: 2px solid var(--cyan); /* Подчеркиваем "линию" */
+    
+    
+    /* Плавный выезд */
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer; 
+    
+}
+/* 2. СОСТОЯНИЕ "РАЗВЕРНУТО" (10 строк) */
+.hud-log.active {
+    height: 220px; /* Примерно 10-12 строк */
+    overflow-y: auto; /* Появляется скролл */
+    border-color: var(--cyan);
+    box-shadow: 0 -10px 30px rgba(0, 242, 255, 0.1);
+    cursor: default; /* По умолчанию курсор обычный */
+    user-select: text; /* Разрешаем выделение текста во всем блоке */
+}
+
+.hud-panel, .hud-log {
+    backdrop-filter: blur(12px); /* Эффект матового стекла */
+    background: rgba(5, 5, 10, 0.85); /* Плотный темный фон */
+    border: 1px solid var(--glass-border);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* -------строка ЛОГОВ------- */
+
+.log-entry {
+    font-family: monospace;
+    color: var(--cyan);
+    margin: 0;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    cursor: text; /* Текст записи всегда "текстовый" */
+    position: relative;
+    z-index: 10; /* Чтобы текст был над фоном и выделялся первым */
+}
+.log-entry:first-child {
+    margin-top: 0;
+}
+.hud-log.active .log-entry {
+    opacity: 1;
+    cursor: text; /* Показываем, что текст можно выделить */
+    pointer-events: auto;
+}
+
+/* Скроллбар для логов */
+.hud-log::-webkit-scrollbar {
+    width: 4px;
+}
+.hud-log::-webkit-scrollbar-thumb {
+    background: var(--cyan);
+}
+/* Когда лог НЕ активен (свернут), текст не должен перехватывать клик */
+.hud-log:not(.active) .log-entry {
+    pointer-events: none;
+}
+/* Когда лог активен, возвращаем возможность выделять текст */
+.hud-log.active .log-entry {
+    pointer-events: auto;
+}

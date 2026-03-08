@@ -1,0 +1,41 @@
+.settings-panel {
+    max-width: 600px;
+    margin-bottom: 40px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.creator-form input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    padding: 15px;
+    color: #fff;
+    font-family: monospace;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.creator-form input:focus {
+    border-color: var(--cyan);
+}
+
+.action-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--cyan);
+    color: #000;
+    border: none;
+    font-weight: 900;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.action-btn:hover {
+    box-shadow: 0 0 20px var(--cyan);
+}

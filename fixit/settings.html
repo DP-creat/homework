@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARC-9 // SETTINGS</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="page__body">
+  <div class="bg-glow"></div>
+
+  <!-- Боковая навигация (Общая для всех страниц) -->
+  <nav class="side-utils">
+    <a href="index.html" class="util-link" title="DASHBOARD">HUD</a>
+    <a href="settings.html" class="util-link active" title="CONFIGURATION">SET</a>
+  </nav>
+  <main class="hub-container container">
+    <header class="hub-header">
+      <h1 class="hub-title">SYSTEM CONFIG</h1>
+      <p class="hub-subtitle">//ARC-9 INTERFACE / L1 SETTINGS</p>
+    </header>
+
+    <section class="content-wrapper">
+      <!-- Панель создания (твоя Creator-Form теперь тут) -->
+      <div class="hub-panel settings-panel">
+        <span class="panel-tag">L1 // UNIT GENERATION</span>
+
+        <div class="creator-form">
+          <div class="form-group">
+            <label class="core-label">IDENTITY</label>
+
+          </div>
+
+          <div class="form-group">
+            <label class="core-label">THRESHOLD</label>
+            <input type="number" id="cell-limit" placeholder="Daily Cap (ex: 5)">
+          </div>
+
+          <button class="action-btn" onclick="createNewCell()">GENERATE UNIT</button>
+        </div>
+      </div>
+
+      <!-- Зона управления данными (Сбросы) -->
+      <div class="hub-panel danger-zone">
+        <span class="panel-tag">L2 // SYSTEM RESET</span>
+        <p class="card-desc">Полная очистка всех био-артефактов и логов.</p>
+        <button class="reset-btn" onclick="hardResetAll()">NUCLEAR RESET</button>
+      </div>
+    </section>
+
+    <footer class="hub-footer">
+      <p class="hub-subtitle">Logic & System Engineering</p>
+      <p>© 2026 DP-creat. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>
