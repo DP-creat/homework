@@ -1,0 +1,14 @@
+/* base */
+@import "./normalize.css";
+@import "./fonts.css";
+@import "./vars.css";
+@import "./globals.css";
+
+/* blocks */
+@import "./blocks/header.css";
+@import "./blocks/info.css";
+@import "./blocks/clickers.css";
+@import "./blocks/log.css";
+@import "./blocks/footer.css";
+@import "./blocks/settings.css";
+

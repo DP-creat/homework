@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html class="page" lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="./icons/Di.ico">
+  <title>fixIt</title>
+</head>
+
+<body class="page__body">
+
+  <div class="bg-glow">
+
+    <header class="header">
+      <div class="container header__container">
+
+        <div class="header__title">
+          <!-- <h1 class="hub-title">DP-Creat</h1> -->
+          <p class="hub-subtitle">INTERFACE //ARC-9</p>
+        </div>
+        <nav class="side-utils">          
+          <a href="settings.html" class="util-link">SET</a>
+        </nav>
+
+        <div class="laser-cross" onclick="deepResetCounters()" title="DEEP RESET">
+          <div class="line-v"></div>
+          <div class="line-h"></div>
+        </div>
+        <button class="reset-btn" onclick="hardResetAll()" title="NUCLEAR RESET">NUCLR RESET</button>
+      </div>
+    </header>
+
+
+
+    <main class="main">
+
+      <section class="clickers">
+        <div class="container clickers__container">
+          <div class="battery-group">
+          </div>
+        </div>
+      </section>
+
+      <div class="container hud-panel__container">
+        <div class="hud-panel clicker">
+          <div class="creator-form">
+            <input type="text" id="cell-name" placeholder="name clicker">
+            <input type="number" id="cell-limit" placeholder="limit click">
+            <button onclick="createNewCell()">creat clicker</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="info">
+        <div class="container info__container">
+          <div class="core-scanner" onclick="window.toggleChrono()">
+            <div class="scan-ring" style="animation-play-state: paused;"></div>
+            <div class="core-data">
+              <span class="core-label">SYNC STATUS</span>
+              <span class="core-value" id="sync-percent">Nn%</span>
+            </div>
+          </div>
+          <nav class="tectonic-nav">
+            <button class="lava-btn" onclick="togglePanel('clicker')">Creat Click<div></div></button>
+            <button class="lava-btn" onclick="togglePanel('kinetic')">FixIt<div></div></button>
+            <button class="lava-btn" onclick="togglePanel('log')">Logs<div></div></button>
+            <button class="lava-btn" onclick="">
+              <a href="settings.html" class="util-link">empty</a>
+            </button>
+          </nav>
+        </div>
+      </section>
+
+      <div class="container hud-panel__container">
+        <div class="hud-panel kinetic">
+          <div class="target-input">
+            <input type="text" id="ex-input" placeholder="new">
+            <button onclick="logExercise()">FixIt</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <footer class="footer log">
+      <div class="container footer__container">
+        <div id="exercise-log" class="hud-log"></div>
+      </div>
+    </footer>
+  </div>
+  <script src="js/cockpit.js"></script>
+</body>
+
+</html>
