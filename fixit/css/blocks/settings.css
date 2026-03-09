@@ -1,0 +1,132 @@
+.manual-interface {
+    justify-content: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------------------------------------------- */
+
+.guide-panel {
+    flex-grow: 0;
+    /* В покое не занимает место */
+    /* transition: all 0.2s ease; */
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    height: 0;
+    width: 2px;
+
+    display: flex; /* Чтобы вложенный контент вел себя предсказуемо */
+    flex-direction: column; 
+
+
+    border-left: 2px solid var(--cyan);
+    border-right: 2px solid var(--cyan);
+    background: linear-gradient(90deg, rgba(0, 242, 255, 0.05) 0%, transparent 100%);
+    z-index: 1;
+
+    /* 2. ЛОГИКА ЗАКРЫТИЯ (Влево -> Вверх) */
+    transition:
+        opacity 0.2s ease,
+        width 0.4s 0s cubic-bezier(0.4, 0, 0.2, 1),
+        height 0.4s 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s 0.8s;
+
+}
+
+.guide-panel.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+    /* Активная панель всегда сверху */
+    
+    /* 3. ФИНАЛЬНЫЕ РАЗМЕРЫ */
+    /* flex-grow: 1; */
+    overflow-y: auto; 
+    overflow-x: hidden;
+    height: 250px;
+    /* height: 100%;
+    width: 100%;
+    margin-inline: auto;
+    /* 4. ЛОГИКА ОТКРЫТИЯ (Вниз -> Вправо) */
+    transition:
+        opacity 0.3s ease,
+        height 0.5s 0s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.5s 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s 0s;
+}
+/* СТИЛИЗАЦИЯ СКРОЛЛА (под систему ARC-9) */
+.guide-panel::-webkit-scrollbar {
+    width: 4px;
+}
+.guide-panel::-webkit-scrollbar-thumb {
+    background: var(--cyan);
+    box-shadow: 0 0 10px var(--cyan);
+}
+/* Контент внутри */
+.guide-panel>* {
+    opacity: 0;
+    transition: opacity 0.3s 0s;
+}
+
+.guide-panel.active>* {
+    opacity: 1;
+    transition: opacity 0.3s 1s ease;
+    /* Появляется после раскрытия */
+}
+
+/* Этап 1: Лазер прочерчивает линию вниз */
+@keyframes laser-down {
+    from {
+        height: 0;
+        opacity: 0;
+        border-left-width: 2px;
+    }
+
+    to {
+        height: 400px;
+        opacity: 1;
+        border-left-width: 2px;
+    }
+}
+
+/* Этап 2: Панель вытягивается вправо из линии */
+@keyframes panel-spread {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 1000px;
+    }
+}
+
+@keyframes fade-in-content {
+    to {
+        opacity: 1;
+    }
+}
+
+.manual-text {
+    /* Чтобы текст не сжимался внутри flex-контейнера */
+    flex-shrink: 0; 
+    padding: 20px;
+    font-family: 'Monospace', sans-serif;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--cyan);
+    opacity: 0;
+    transition: opacity 0.2s 0.8s; /* Появление чуть позже раздвижки */
+}
+
+.guide-panel.active .manual-text {
+    opacity: 1;
+}
+
+.manual-text strong {
+    color: #fff;
+    text-shadow: 0 0 5px var(--cyan);
+}
