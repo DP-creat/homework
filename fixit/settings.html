@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARC-9 // SYSTEM MANUAL</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="page__body">
+  <div class="bg-glow">
+    <main class="main manual-interface">
+      <div class="container hud-panel__container"><!-- ПАНЕЛЬ 1: UNITS -->
+          <div class="hud-panel guide-panel m-units">
+            <div class="manual-text">
+              <p>// <strong>STASIS:</strong> 1-й клик будит ячейку. Активируется "часовой пояс".</p>
+              <p>// <strong>DEPLOY:</strong> 2-й клик фиксирует прием и пишет в лог.</p>
+              <p>// <strong>X-ICONS:</strong> Появляются по бокам для отката или удаления.</p>
+            </div>
+          </div></div>
+      <div class="container hud-panel__container"><!-- ПАНЕЛЬ 2: SYSTEM -->
+          <div class="hud-panel guide-panel m-system">
+            <div class="manual-text">
+              <p>// <strong>SCANNER:</strong> Показывает ресурс дня (07:00-23:00).</p>
+              <p>// <strong>CHRONO:</strong> 1-й клик — READY, 2-й — START, 3-й — RESET.</p>
+              <p>// <strong>LASER CROSS:</strong> Наверху HUD — сброс счетчиков дня.</p>
+            </div>
+            
+          </div></div>
+      <div class="container hud-panel__container"><!-- ПАНЕЛЬ 3: LOGS -->
+          <div class="hud-panel guide-panel m-logs">
+            <div class="manual-text">
+              <p>// <strong>TERMINAL:</strong> Нижняя линия раскрывается вверх по клику.</p>
+              <p>// <strong>COPYING:</strong> Выделение текста не закрывает окно.</p>
+              <p>// <strong>NUCLEAR:</strong> Кнопка в хедере стирает ВСЮ память.</p>
+            </div>
+          </div></div>
+      
+
+          
+
+          
+      <section class="info">
+        <div class="container info__container">
+          <!-- НАВИГАЦИЯ -->
+          <nav class="tectonic-nav ">
+            <button class="lava-btn" onclick="window.toggleManual('units')">Units Guide<div></div></button>
+            <button class="lava-btn" onclick="window.toggleManual('system')">System Guide<div></div></button>
+            <button class="lava-btn" onclick="window.toggleManual('logs')">Log Guide<div></div></button>
+            <button class="lava-btn" onclick="location.href='index.html'">BACK TO HUD<div></div></button>
+          </nav>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <script src="js/cockpit.js"></script>
+</body>
+</html>
