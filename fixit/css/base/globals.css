@@ -1,0 +1,110 @@
+.page {
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--bg-cos);
+    line-height: 1.2;
+}
+
+html, body {
+    height: 100dvh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* ГЛОБАЛЬНЫЙ ЗАПРЕТ СКРОЛЛА */
+    display: flex;
+    flex-direction: column;
+    
+}
+.page__body {
+    background-color: var(--bg);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+.header, .footer {
+    flex-shrink: 0; /* Запрещаем сжиматься */
+}
+
+
+.page__body--no-scroll {
+    overflow-y: hidden;
+}
+.bg-glow {
+    background: radial-gradient(circle at center, #6ad8d8 -300%, var(--bg-cos) 100%);
+}
+.main {
+    height: calc(100dvh - 100px); /* Вычитаем высоту хедера и футера */
+    flex: 1; /* ЭТО ГЛАВНОЕ: main забирает всё свободное место, толкая футер вниз */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 5px; /* Зазор перед футером */
+    overflow: hidden; /* Запрещаем скролл всей страницы */
+    min-height: 0; /* Важный фикс для Firefox/Chrome во Flex-боксах */
+}
+.container {
+    width: min(var(--container-width), 100% - var(--container-padding) * 2);
+    margin-inline: auto;
+}
+
+.cell-svg, .cell-header, .scan-ring {
+    pointer-events: none;
+    /* Пропускает клик сквозь себя */
+}
+
+.battery-cell, .mini-reset, .delete-unit, .reset-btn, .lava-btn, 
+.core-scanner, button {
+    pointer-events: auto; /* Эти элементы должны принимать клик */
+    
+    /* Убирает синюю/серую вспышку при тапе на мобилках */
+    -webkit-tap-highlight-color: transparent;
+    
+    /* Дополнительно: убирает контур при фокусе (если мешает) */
+    outline: none;
+}
+
+.footer {
+    margin-bottom: 20px;
+    /* margin-top: 50px; */
+}
+.footer {
+    /* Учитываем системные зоны навигации смартфонов */
+    padding-bottom: env(safe-area-inset-bottom, 20px); 
+    position: relative;
+    z-index: 200;
+}
+.footer__container {
+/* margin-bottom: 60px; */
+}
+
+
+
+
+/* Примени это к своим кнопкам или кругам: */
+.sky-glow {
+    color: var(--ghost-sky); /* Текст почти белый */
+    text-shadow: 
+        0 0 5px var(--sky-cyan),
+        0 0 15px var(--sky-cyan),
+        0 0 30px var(--electric-sky);
+    
+    /* Для блоков/бордеров */
+    border-color: var(--sky-cyan);
+    box-shadow: 
+        0 0 10px var(--glass-border),
+        inset 0 0 5px var(--sky-cyan);
+}
+/* Пример для твоего Core-Scanner или Текста */
+.nebula-glow {
+    color: var(--sky-ghost); /* Текст почти белый, но с оттенком льда */
+    text-shadow: 
+        0 0 5px var(--sky-bright),
+        0 0 15px var(--sky-primary),
+        0 0 30px rgba(0, 170, 255, 0.5); /* Мягкое синее облако вокруг */
+}
+.sky-border {
+    border: 1px solid var(--sky-primary);
+    box-shadow: 
+        inset 0 0 10px rgba(0, 170, 255, 0.2),
+        0 0 15px rgba(0, 170, 255, 0.3);
+}
