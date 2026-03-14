@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ARC-9 // NEURO_SOUND_GEN</title>
+  <!-- Локальные библиотеки из твоего проекта -->
+  <script src="js/p5.min.js"></script>
+  <script src="js/p5.sound.min.js"></script>
+  <style>
+    :root {
+      --sky-cyan: #00f2ff;
+      --bg-cos: #010208;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg-cos);
+      font-family: monospace;
+    }
+
+    #ui-layer {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      color: var(--sky-cyan);
+      background: rgba(1, 2, 8, 0.8);
+      padding: 20px;
+      border: 1px solid rgba(0, 242, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    input[type="file"] {
+      color: var(--sky-cyan);
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    h2 {
+      margin: 0 0 5px 0;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    #status {
+      font-size: 10px;
+      opacity: 0.6;
+    }
+
+    button {
+      background: transparent;
+      border: 1px solid var(--sky-cyan);
+      color: var(--sky-cyan);
+      padding: 8px 15px;
+      cursor: pointer;
+      margin-top: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: var(--sky-cyan);
+      color: #000;
+      box-shadow: 0 0 15px var(--sky-cyan);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="ui-layer">
+    <h2>Neuro_Sound_Gen</h2>
+    <div id="status">Загрузи аудио-пакет (.mp3)</div>
+    <input type="file" id="file-input" accept="audio/*">
+    <br>
+    <button id="play-btn" style="display:none;">Initialize_Stream</button>
+  </div>
+
+  <script>
+    let song, fft, statusEl, playBtn;
+    let isInitialized = false;
+
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      fft = new p5.FFT(0.8, 128); // Сглаживание и количество полос
+
+      statusEl = document.getElementById('status');
+      playBtn = document.getElementById('play-btn');
+      const fileInput = document.getElementById('file-input');
+
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          if (song) song.stop();
+          statusEl.innerText = "ДЕКОДИРОВАНИЕ ПАКЕТА...";
+
+          // Создаем временную ссылку на файл в памяти браузера
+          let fileURL = URL.createObjectURL(file);
+
+          // Загружаем звук
+          song = loadSound(fileURL, () => {
+            statusEl.innerText = "ПОТОК ГОТОВ. ЗАПУСКАЙ";
+            playBtn.style.display = 'inline-block';
+            isInitialized = true;
+          });
+        }
+      });
+
+      playBtn.addEventListener('click', () => {
+        if (song.isPlaying()) {
+          song.pause();
+          statusEl.innerText = "ПАУЗА";
+        } else {
+          song.play();
+          statusEl.innerText = "В ЭФИРЕ // SYNC_ACTIVE";
+        }
+      });
+    }
+
+    function draw() {
+      // Эффект "Черной дыры" (шлейф)
+      background(1, 2, 8, 35);
+
+      if (!song || !song.isPlaying()) {
+        push(); // Изолируем трансформации
+        translate(width / 2, height / 2);
+
+        let pulse = sin(frameCount * 0.05) * 30 + 80; // Базовая пульсация
+        let rotateSpeed = frameCount * 0.01; // Скорость вращения лучей
+
+        // Рисуем лучи (солнышко)
+        for (let i = 0; i < 36; i++) {
+          let angle = map(i, 0, 36, 0, TWO_PI) + rotateSpeed;
+          // Длина лучей тоже немного пульсирует
+          let rayLen = pulse + (i % 2 === 0 ? 40 : 20) + sin(frameCount * 0.1 + i) * 10;
+
+          let x = cos(angle) * rayLen;
+          let y = sin(angle) * rayLen;
+
+          // Цвет переливается от небесного к прозрачному
+          stroke(0, 242, 255, map(sin(frameCount * 0.05 + i), -1, 1, 20, 150));
+          strokeWeight(2);
+          line(0, 0, x, y);
+        }
+
+        // Центральное ядро
+        noStroke();
+        fill(0, 242, 255, 40);
+        ellipse(0, 0, pulse, pulse);
+
+        // Внутренний блик
+        fill(255, 255, 255, 30);
+        ellipse(0, 0, pulse * 0.6, pulse * 0.6);
+        pop();
+        return;
+      }
+
+      let spectrum = fft.analyze();
+      let bass = fft.getEnergy("bass");
+      let treble = fft.getEnergy("treble");
+      let mid = fft.getEnergy("mid");
+
+      translate(width / 2, height / 2);
+
+      // Вращение зависит от средних частот
+      rotate(frameCount * map(mid, 0, 255, 0.002, 0.015));
+
+      // Отрисовка Электрического Мицелия
+      for (let i = 0; i < 80; i++) {
+        let angle = map(i, 0, 80, 0, TWO_PI);
+
+        // Бас управляет "размахом" грибницы
+        let r = map(bass, 0, 255, 60, height / 2.1);
+
+        // Волновое искажение нитей
+        let offset = sin(frameCount * 0.04 + i) * map(treble, 0, 255, 5, 40);
+
+        let x = (r + offset) * cos(angle);
+        let y = (r + offset) * sin(angle);
+
+        // Цвет: Небесный циан, яркость от баса
+        stroke(0, 242, 255, map(bass, 0, 255, 80, 255));
+        strokeWeight(map(treble, 0, 255, 0.5, 3));
+
+        line(0, 0, x, y);
+
+        // "Нейроны" на концах (вспышки на высоких частотах)
+        if (treble > 180) {
+          fill(255, map(treble, 0, 255, 100, 255));
+          noStroke();
+          ellipse(x, y, map(treble, 0, 255, 2, 8));
+        }
+      }
+    }
+
+    function drawSingularity() {
+      translate(width / 2, height / 2);
+      noFill();
+      stroke(0, 242, 255, 30);
+      let s = sin(frameCount * 0.05) * 40 + 100;
+      ellipse(0, 0, s, s);
+    }
+
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+    }
+  </script>
+</body>
+
+</html>

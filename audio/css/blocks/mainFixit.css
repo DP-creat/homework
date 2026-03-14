@@ -1,0 +1,60 @@
+
+
+
+
+
+.footer {
+    margin-bottom: 20px;
+    /* margin-top: 50px; */
+}
+.footer {
+    /* Учитываем системные зоны навигации смартфонов */
+    padding-bottom: env(safe-area-inset-bottom, 20px); 
+    position: relative;
+    z-index: 200;
+}
+
+
+/* --------------------------------- */
+.tectonic-nav__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; /* Центрирует кнопки внутри себя */
+    gap: 15px;
+    height: 100%;
+    width: auto; /* ВАЖНО: блок не должен быть 100% */
+    flex: 1; /* Позволяет блоку гибко стоять в центре */
+}
+
+/* --------------------------------------------------------------------------------- */
+/* Примени это к своим кнопкам или кругам: */
+.sky-glow {
+    color: var(--ghost-sky); /* Текст почти белый */
+    text-shadow: 
+        0 0 5px var(--sky-cyan),
+        0 0 15px var(--sky-cyan),
+        0 0 30px var(--electric-sky);
+    
+    /* Для блоков/бордеров */
+    border-color: var(--sky-cyan);
+    box-shadow: 
+        0 0 10px var(--glass-border),
+        inset 0 0 5px var(--sky-cyan);
+}
+/* Пример для твоего Core-Scanner или Текста */
+.nebula-glow {
+    color: var(--sky-ghost); /* Текст почти белый, но с оттенком льда */
+    text-shadow: 
+        0 0 5px var(--sky-bright),
+        0 0 15px var(--sky-primary),
+        0 0 30px rgba(0, 170, 255, 0.5); /* Мягкое синее облако вокруг */
+}
+.sky-border {
+    border: 1px solid var(--sky-primary);
+    box-shadow: 
+        inset 0 0 10px rgba(0, 170, 255, 0.2),
+        0 0 15px rgba(0, 170, 255, 0.3);
+}
+/* ------------------------------------------------------------------------------- */
+

@@ -1,0 +1,167 @@
+.info {}
+
+/* .info__container {
+    padding-inline: 10px;
+    gap: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+} */
+.info__container {
+    width: 100%;
+    max-width: var(--container-width);
+    /* Убедись, что ширина 1440 */
+    margin: 0 auto;
+    padding-inline: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    /* Расталкивает элементы */
+    align-items: center;
+    gap: 20px;
+    
+}
+
+.hud-panel__container {
+    gap: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ----------------------------------------------- */
+
+.kinetic {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+
+}
+
+.kinetic.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+    /* Активная панель всегда сверху */
+
+    /* 3. ФИНАЛЬНЫЕ РАЗМЕРЫ */
+    height: 60px;
+    width: 100%;
+
+}
+
+/* ----------Логи и ввод (Kinetics) --========-------*/
+
+.target-input {
+    padding-inline: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.target-input input {
+    flex: 1;
+    background: #000;
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    padding: 10px;
+    outline: none;
+}
+
+.target-input button {
+    background: var(--cyan);
+    color: #000;
+    border: none;
+    padding: 0 20px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+/* ---------------------------------------------------- */
+
+.clicker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+
+}
+
+.clicker.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+    /* Активная панель всегда сверху */
+
+    /* 3. ФИНАЛЬНЫЕ РАЗМЕРЫ */
+    /* height: 100%; */
+    /* max-width: 600px; */
+}
+
+/* ------------------------------------------------- */
+
+.creator-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.creator-form input {
+    background: #000;
+    border: 1px solid var(--glass-border);
+    color: var(--cyan);
+    padding: 12px;
+    outline: none;
+}
+
+.creator-form button {
+    background: var(--cyan);
+    color: #000;
+    border: none;
+    font-weight: 900;
+    /* text-transform: uppercase; */
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.creator-form button:hover {
+    box-shadow: 0 0 20px var(--cyan);
+}
+
+
+
+/* ---------------------BTN------------------------------------ */
+
+.tectonic-nav {
+    flex-shrink: 0;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    gap: 15px;
+    height: 100%;
+    max-width: 150px;
+    width: 100%;
+}
+
+
+/* ====================================================== */
+/* АДАПТИВ (ПЕРЕНОС ВНИЗ) - Порог 768px (стандарт планшета) */
+/* ====================================================== */
+
+@media (max-width: 850px) { /* Подобрал под ширину твоей панели 600 + бока */
+    .info__container {
+        flex-wrap: wrap; /* Позволяет падать вниз */
+    }
+
+
+    .hud-panel.active {
+}
+}
+
+
