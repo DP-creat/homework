@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARC-9 // SYSTEM MANUAL</title>
+  <link rel="stylesheet" href="css/fixit.css">
+</head>
+
+<body class="page__body">
+  <div class="bg-glow">
+    <main class="main manual-interface">
+      <div class="container hud-panel__container">
+        <!-- ПАНЕЛЬ 1: SYSTEM -->
+        <div class="hud-panel guide-panel m-system">
+          <div class="manual-text">
+            <h4><strong>Концепция системы</strong></h4>
+            <p>// <strong>ARC-9</strong> — это персональный терминал управления состоянием. Система отслеживает ваши
+              био-ритмы и активность, визуализируя их в виде энергетических юнитов.</p>
+          </div>
+        </div>
+        <!-- ПАНЕЛЬ 2: Командная панель -->
+        <div class="hud-panel guide-panel m-command">
+          <div class="manual-text">
+            <h4><strong>Командная панель</strong></h2>
+              <p>// <strong>Центральное ядро</strong> Показывает процент оставшегося ресурса дня.</p>
+              <p>/ <strong>Хронометр: </strong> Кликните по кольцу, чтобы активировать. <strong>Второй</strong>
+                клик запускает секундомер для замера текущей сессии. <strong>Третий</strong> клик возвращает систему в
+                режим мониторинга.</p>
+              <p>// <strong>Creat Click:</strong> Открывает инженерный отсек для создания новых юнитов. Задайте имя и
+                дневной лимит.</p>
+              <p>// <strong>FixIt:</strong> Панель быстрой записи физических достижений (Кинетика).</p>
+              <p>// <strong>Logs:</strong> Доступ к истории. Кликните в самом низу экрана, чтобы развернуть терминал
+                событий.</p>
+          </div>
+        </div>
+        <!-- ПАНЕЛЬ 3: UNITS -->
+        <div class="hud-panel guide-panel m-units">
+          <div class="manual-text">
+            <h4><strong>Управление юнитами (Круглые ячейки)</strong></h4>
+            <p>Каждая ячейка — это отдельный параметр (добавка, привычка или ресурс)</p>
+            <p> // <strong>Пробуждение (1-й клик):</strong> Выберите юнит. Он наберет яркость, активируя «часовой пояс»
+              —
+              неоновые точки покажут точное время предыдущих приемов.</p>
+            <p> // <strong>Фиксация (2-й клик):</strong> Добавляет +1 к счетчику. Круговой индикатор заполнится, а
+              событие мгновенно запишется в бортовой журнал.</p>
+            <p> // <strong>Коррекция (Иконки «X»):</strong> Появляются только у активного юнита.</p>
+            <p><strong>Зеленый:</strong> Отмена ошибочного клика (-1).</p>
+            <p><strong>Красный:</strong> Полное удаление юнита из системы.</p>
+          </div>
+        </div>
+        <!-- ПАНЕЛЬ 4: LOGS -->
+        <div class="hud-panel guide-panel m-logs">
+          <div class="manual-text">
+            <p>// <strong>Laser Cross (DEEP RESET):</strong> Сброс всех счетчиков. Начните новый день с чистого листа.
+            </p>
+            <p>// <strong>Nuclr Reset:</strong> Полное форматирование. Удаляет все настройки и историю (используйте
+              только при критическом сбое).
+          </div>
+        </div>
+      </div>
+
+      <section class="info">
+        <div class="container info__container">
+          <!-- НАВИГАЦИЯ -->
+          <nav class="tectonic-nav ">
+            <button class="lava-btn" onclick="window.toggleManual('system')">System Guide</button>
+            <button class="lava-btn" onclick="window.toggleManual('command')">Command Guide</button>
+            <button class="lava-btn" onclick="window.toggleManual('units')">Units Guide</button>
+            <button class="lava-btn" onclick="window.toggleManual('logs')">Emergency</button>
+            <button class="lava-btn" onclick="togglePanel('biochemical')">Bio-Analysis<div></div></button>
+            <button class="lava-btn" onclick="location.href='index.html'">to main</button>
+          </nav>
+        </div>
+      </section>
+
+      <div class="container hud-panel__container">
+        <div class="hud-panel biochemical">
+          <span class="panel-tag">BIO-ANALYSIS // DOPAMINE & SEROTONIN</span>
+          <div class="bio-grid">
+            <!-- Факторы просадки -->
+            <div class="bio-inputs">
+              <div class="bio-row">
+                <label>STRESS LEVEL</label>
+                <input type="range" id="stress-range" min="0" max="100" value="20" oninput="updateBioCalc()">
+              </div>
+              <div class="bio-row">
+                <label>SUGAR CRASH</label>
+                <input type="range" id="sugar-range" min="0" max="100" value="10" oninput="updateBioCalc()">
+              </div>
+              <div class="bio-row">
+                <label>SLEEP DEBT</label>
+                <input type="range" id="sleep-range" min="0" max="100" value="30" oninput="updateBioCalc()">
+              </div>
+            </div>
+
+            <!-- Результат -->
+            <div class="bio-result">
+              <div class="result-value" id="burnout-percent">0%</div>
+              <div class="result-label">RESOURCE DEPLETION</div>
+              <div id="bio-advice" class="manual-text" style="opacity: 1; font-size: 11px;">System Stable</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="js/fixit.js"></script>
+</body>
+
+</html>
