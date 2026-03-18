@@ -1,0 +1,43 @@
+html, body {
+    height: 100dvh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* ГЛОБАЛЬНЫЙ ЗАПРЕТ СКРОЛЛА */
+    
+}
+.page {
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--bg-cos);
+    line-height: 1.2;
+}
+.page__body {
+    background-color: var(--accent);
+    color: var(--accent);
+    display: flex;
+    flex-direction: column;
+}
+.page__body--no-scroll {
+    overflow-y: hidden;
+}
+.header, .footer {
+    flex-shrink: 0; /* Запрещаем сжиматься */
+}
+
+/* { */
+    /* pointer-events: none; */
+    /* Пропускает клик сквозь себя */
+/* } */
+button {
+    pointer-events: auto; /* Эти элементы должны принимать клик */
+    /* Убирает синюю/серую вспышку при тапе на мобилках */
+    -webkit-tap-highlight-color: transparent;    
+    /* Дополнительно: убирает контур при фокусе (если мешает) */
+    outline: none;
+}
+
+.container {
+    width: min(var(--container-width), 100% - var(--container-padding) * 2);
+    margin-inline: auto;
+}
