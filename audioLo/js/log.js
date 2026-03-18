@@ -149,51 +149,40 @@ function draw() {
 
     // 3. Автопереход
     if (song.currentTime() >= song.duration() - 0.1) nextTrack();
-  }
-// --- БЛОК 3. УНИВЕРСАЛЬНЫЕ БРИЛЛИАНТОВЫЕ ЗВЕЗДЫ ---
-if (starElements.length > 0) {
-    let trb = fft.getEnergy("treble"); 
-    let bass = fft.getEnergy("bass");
-    let mid = fft.getEnergy("mid");
 
-    let globalHue = (frameCount * 0.4) % 360; 
+    // --- СИНХРОНИЗАЦИЯ ЗВЕЗД С МУЗЫКОЙ ---
+    if (starElements.length > 0 && song && song.isPlaying()) {
+      let trb = fft.getEnergy("treble"); // Высокие частоты для искр
+      let mid = fft.getEnergy("mid");    // Средние для общей яркости
 
-    starElements.forEach((star, i) => {
-    let isGiant = star.classList.contains('star--giant');
-    
-    let h = (globalHue + i * 5) % 360;
-    
-    // На высоких частотах крупные звезды становятся кристально-белыми
-    let saturation = isGiant ? map(trb, 100, 255, 60, 0) : 80;
-    let brightness = isGiant ? map(trb, 100, 255, 80, 100) : 75;
+      // Глобальный сдвиг цвета (такой же, как у лучей твоего Сердца)
+      let globalHue = (frameCount * 0.5) % 360;
 
-    // Острое "бриллиантовое" мерцание
-    let flicker = sin(frameCount * (isGiant ? 0.3 : 0.1) + i) * 0.4;
-    let finalOp = constrain(0.4 + flicker + map(trb, 0, 255, 0, 0.5), 0.1, 1.0);
+      starElements.forEach((star, i) => {
+        // 1. ЦВЕТ: Каждая звезда имеет свой оттенок, но все они крутятся радугой
+        let h = (globalHue + i * 2) % 360;
 
-    // ДЕТАЛИЗАЦИЯ СВЕЧЕНИЯ
-    let glowSize = isGiant ? map(trb, 120, 255, 5, 25) : map(trb, 150, 255, 0, 8);
-    
-    star.style.backgroundColor = `hsl(${h}, ${saturation}%, ${brightness}%)`;
-    star.style.opacity = finalOp;
-    
-    // Для крупных звезд делаем "звездный" ореол через drop-shadow
-    if (isGiant) {
-        star.style.filter = `drop-shadow(0 0 ${glowSize/2}px hsl(${h}, 100%, 70%))`;
-        star.style.boxShadow = 'none'; // Отключаем обычную тень для формы ромба
-    } else {
+        // 2. МЕРЦАНИЕ: Базовая яркость от Treble + индивидуальный "пульс"
+        // Чем сильнее "цикают" высокие, тем ярче вспыхивают звезды
+        let baseOp = map(trb, 0, 255, 0.05, 0.7);
+        let pulse = sin(frameCount * 0.15 + i) * 0.25; // Быстрое мерцание
+        let finalOp = constrain(baseOp + pulse, 0.05, 1.0);
+
+        // 3. СВЕЧЕНИЕ: На пиках звука звезды раздуваются неоном
+        let glowSize = map(trb, 0, 255, 0, 15);
+
+        // Применяем стили напрямую (без задержек CSS)
+        star.style.backgroundColor = `hsl(${h}, 90%, 85%)`;
+        star.style.opacity = finalOp;
         star.style.boxShadow = `0 0 ${glowSize}px hsl(${h}, 100%, 50%)`;
-        star.style.filter = 'none';
+
+        // Микро-всплеск размера на сильных частотах
+        let scale = map(mid, 0, 255, 0.8, 1.3);
+        star.style.transform = `scale(${scale})`;
+      });
     }
-    
-    // Бас-бочка толкает крупные звезды сильнее (эффект приближения)
-    let bassBoost = isGiant ? map(bass, 190, 255, 0, 1.5) : map(bass, 200, 255, 0, 0.3);
-    let s = (isGiant ? 1.0 : 0.8) + bassBoost + map(mid, 0, 255, 0, 0.2);
-    
-    star.style.transform = `scale(${s})`;
-});
-}
-  
+
+  }
 
   // --- ГРИБНИЦА 8.0 // RAINBOW_HYPER_FLOW ---
   
@@ -332,3 +321,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+  // 3. УНИВЕРСАЛЬНЫЕ ЗВЕЗДЫ (Работают ВСЕГДА: Idle, MP3, Browser)
+  if (starElements.length > 0) {
+    let globalHue = (frameCount * 0.3) % 360; // Медленное радужное переливание
+
+    starElements.forEach((star, i) => {
+      // ЦВЕТ: Мягкая радуга (всегда цветные, никогда не серые)
+      let h = (globalHue + i * 2) % 360;
+
+      // МЕРЦАНИЕ: 
+      // Базовое (успокаивающее) + от высоких частот (искры)
+      let idlePulse = sin(frameCount * 0.05 + i) * 0.15; 
+      let activePulse = map(treble, 0, 255, 0, 0.6);
+      let finalOp = constrain(0.2 + idlePulse + activePulse, 0.1, 1.0);
+
+      // ПУЛЬСАЦИЯ ОТ БАС-БОЧКИ:
+      // На ударе баса звезды слегка увеличиваются (эффект дыхания космоса)
+      let bassBoost = map(bass, 180, 255, 0, 0.8); 
+      let scale = map(mid, 0, 255, 0.9, 1.2) + bassBoost;
+
+      // СВЕЧЕНИЕ (BLOOM):
+      let glowSize = map(treble, 0, 255, 2, 12);
+
+      // Применяем стили
+      star.style.backgroundColor = `hsl(${h}, 80%, 80%)`;
+      star.style.opacity = finalOp;
+      star.style.boxShadow = `0 0 ${glowSize}px hsl(${h}, 100%, 50%)`;
+      star.style.transform = `scale(${scale})`;
+    });
+  }
