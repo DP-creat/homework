@@ -1,0 +1,361 @@
+/* Контейнер для Сердца */
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  /* Опускаем ниже звезд */
+  display: block;
+  background-color: var(--bg-cos)
+}
+
+
+/* Главная обертка на весь экран */
+.ui-wrapper {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Центральный узел (Круг и боковые кнопки) */
+#ui-layer {
+  position: relative;
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}/* ВЕРХНИЙ ХУД: Прижат к верху */
+
+/* ЦЕНТРАЛЬНАЯ КНОПКА-КРУГ */
+.main-circle-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--cyan);
+  border: 1px solid rgba(0, 242, 255, 0.1); 
+  backdrop-filter: blur(0px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 2px;
+  z-index: 3;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
+}
+/* ТЕКСТ И ЗНАЧКИ ВНУТРИ (PLAY / ACTIVE / ▶) */
+#main-btn-text {
+  color: var(--cyan);
+  font-size: 10px;
+  letter-spacing: 2px;
+  opacity: 0; /* ПО УМОЛЧАНИЮ НЕВИДИМ */
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* Чтобы текст не мешал клику по кругу */
+}
+
+/* ЭФФЕКТ ПРИ НАВЕДЕНИИ КУРСОРA */
+.main-circle-btn:hover {
+  border-color: rgba(0, 242, 255, 0.8);
+  background: rgba(1, 2, 8, 0.4);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+}
+
+.main-circle-btn:hover #main-btn-text {
+  opacity: 1; /* ТЕКСТ ПРОЯВЛЯЕТСЯ */
+}
+
+/* Чтобы в State-2 (когда треугольник) он тоже был скрыт до наведения */
+.state-2 #main-btn-text {
+    font-size: 32px;
+    margin-left: 4px;
+}
+/* ВЕРХНИЙ ХУД: Прижат к верху */
+.hud-top {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s;
+}
+
+/* НИЖНИЙ ХУД: Прижат к низу */
+.hud-bottom {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s;
+}
+
+/* ГРУППА ПЛЕЙЛИСТ: Прижата к правой стенке */
+#playlist-side {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 280px;
+  max-height: 80vh;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s;
+  background: rgba(2, 4, 10, 0.3);
+  backdrop-filter: blur(5px);
+  padding: 15px;
+  border-left: 1px solid rgba(0, 242, 255, 0.1);
+}
+
+/* ПЕРЕКЛЮЧАТЕЛИ ТРЕКОВ: 40px от круга */
+.hud-side {
+  position: absolute;
+  width: 240px; /* Круг 120 + 40 + 40 + кнопки 20+20 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.4s;
+  pointer-events: none;
+}
+.hud-side button { pointer-events: auto; }
+
+/* --- СОСТОЯНИЯ (DISPLAY LOGIC) --- */
+
+/* STATE 1: ПОЛНЫЙ ДОСТУП (Первое нажатие) */
+.state-1 .hud-top, 
+.state-1 .hud-bottom, 
+.state-1 .hud-side, 
+.state-1 #playlist-side {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+/* STATE 2: ЧИСТЫЙ ФОКУС (Второе нажатие) */
+.state-2 .hud-top, 
+.state-2 .hud-bottom {
+  opacity: 0.8; /* Оставляем дорожку и название */
+  visibility: visible;
+}
+
+.state-2 .hud-side, 
+.state-2 #playlist-side {
+  opacity: 0; /* Плейлист и кнопки PREV/NEXT исчезают */
+  visibility: hidden;
+}
+/* Кнопки по бокам */
+.btn-side {
+  background: none;
+  border: none;
+  color: var(--cyan);
+  cursor: pointer;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.btn-side:hover {
+  opacity: 1;
+  text-shadow: 0 0 10px var(--cyan);
+}
+
+/* Мини кнопки в плейлисте */
+.btn-mini {
+  font-size: 9px;
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  padding: 4px 8px;
+  color: var(--cyan);
+  cursor: pointer;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.time-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+  opacity: 0.7;
+  font-family: 'Monospace', monospace;
+}
+
+/* Дорожка прогресса */
+#progress-container {
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 242, 255, 0.1);
+  margin: 15px 0;
+  cursor: pointer;
+  position: relative;
+}
+
+#progress-bar {
+  width: 0%;
+  height: 100%;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+/* Плейлист */
+#playlist {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 15px;
+  font-size: 11px;
+  border-top: 1px solid rgba(0, 242, 255, 0.1);
+  padding-top: 10px;
+}
+
+#playlist::-webkit-scrollbar {
+  width: 4px;
+}
+
+#playlist::-webkit-scrollbar-thumb {
+  background: var(--cyan);
+}
+
+.track-item {
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-item:hover,
+.track-item.active {
+  opacity: 1;
+  background: rgba(0, 242, 255, 0.1);
+}
+
+/* Кнопки управления */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.btn {
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.btn:hover {
+  background: var(--cyan);
+  color: #000;
+}
+
+.btn.active {
+  background: var(--cyan);
+  color: #000;
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+label {
+  display: block;
+  text-align: center;
+  border: 1px dashed var(--cyan);
+  padding: 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#track-info {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  height: 15px;
+  overflow: hidden;
+}
+
+/* ==== VOLUME ================= */
+
+.volume-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  font-size: 9px;
+  opacity: 0.8;
+}
+
+#volume-slider {
+  flex: 1;
+  appearance: none;
+  background: rgba(0, 242, 255, 0.1);
+  height: 2px;
+  outline: none;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: var(--cyan);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+#vol-value {
+  width: 30px;
+  text-align: right;
+}
+
+
+
+#stars-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1 !important;
+  pointer-events: none;
+  overflow: hidden;
+  /* background-color: var(--bg-cos); */
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background-color: white;
+  /* Базовый цвет, пока JS не подхватит */
+  min-width: 1px;
+  min-height: 1px;
+  transition: none !important;
+  will-change: transform, opacity, background-color;
+}
+
+.star--giant {
+  /* Форма острого четырехконечного ромба */
+  /* clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%); */
+  /* border-radius: 0;  */
+}
