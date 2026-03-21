@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ARC-9 // NEURO_STATION</title>
+  <script src="js/p5.min.js"></script>
+  <script src="js/p5.sound.min.js"></script>
+  <style>
+    :root {
+      --sky: #00f2ff;
+      --bg: #010208;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: 'Courier New', monospace;
+      color: var(--sky);
+    }
+
+    #ui-layer {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      background: rgba(1, 2, 8, 0.9);
+      padding: 20px;
+      border: 1px solid rgba(0, 242, 255, 0.2);
+      backdrop-filter: blur(10px);
+      width: 300px;
+    }
+
+    .time-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+      opacity: 0.7;
+      font-family: 'Monospace', monospace;
+    }
+
+    /* Дорожка прогресса */
+    #progress-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(0, 242, 255, 0.1);
+      margin: 15px 0;
+      cursor: pointer;
+      position: relative;
+    }
+
+    #progress-bar {
+      width: 0%;
+      height: 100%;
+      background: var(--sky);
+      box-shadow: 0 0 10px var(--sky);
+    }
+
+    /* Плейлист */
+    #playlist {
+      max-height: 150px;
+      overflow-y: auto;
+      margin-top: 15px;
+      font-size: 11px;
+      border-top: 1px solid rgba(0, 242, 255, 0.1);
+      padding-top: 10px;
+    }
+
+    .track-item {
+      padding: 5px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-item:hover,
+    .track-item.active {
+      opacity: 1;
+      background: rgba(0, 242, 255, 0.1);
+    }
+
+    /* Кнопки управления */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .btn {
+      background: transparent;
+      border: 1px solid var(--sky);
+      color: var(--sky);
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .btn:hover {
+      background: var(--sky);
+      color: #000;
+    }
+
+    .btn.active {
+      background: var(--sky);
+      color: #000;
+      box-shadow: 0 0 10px var(--sky);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    label {
+      display: block;
+      text-align: center;
+      border: 1px dashed var(--sky);
+      padding: 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    #track-info {
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      height: 15px;
+      overflow: hidden;
+    }
+
+    /* ==== VOLUME ================= */
+
+    .volume-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+      font-size: 9px;
+      opacity: 0.8;
+    }
+
+    #volume-slider {
+      flex: 1;
+      appearance: none;
+      background: rgba(0, 242, 255, 0.1);
+      height: 2px;
+      outline: none;
+    }
+
+    #volume-slider::-webkit-slider-thumb {
+      appearance: none;
+      width: 10px;
+      height: 10px;
+      background: var(--sky);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--sky);
+    }
+
+    #vol-value {
+      width: 30px;
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="ui-layer">
+    <div id="track-info">IDLE_MODE</div>
+    <!-- БЛОК ВРЕМЕНИ -->
+    <div class="time-meta">
+      <span id="current-time">00:00</span>
+      <span id="remaining-time">-00:00</span>
+    </div>
+
+    <div id="progress-container" onclick="seek(event)">
+      <div id="progress-bar"></div>
+    </div>
+<!-- КНОПКИ -->
+    <div class="controls">
+      <button class="btn" onclick="prevTrack()">PREV</button>
+      <button class="btn" id="play-btn" onclick="togglePlay()">PLAY</button>
+      <button class="btn" onclick="nextTrack()">NEXT</button>
+    </div>
+<!-- громкость -->
+    <div class="volume-container">
+      <span class="vol-label">VOL</span>
+      <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume(this.value)">
+      <span id="vol-value">50%</span>
+    </div>
+<!-- шафл -->
+    <div class="controls" style="margin-top: 10px;">
+      <button class="btn" id="shuffle-btn" onclick="toggleShuffle()">SHUFFLE: OFF</button>
+      <label for="file-input">IMPORT FOLDER</label>
+    </div>
+<!-- файлы -->
+    <input type="file" id="file-input" webkitdirectory directory multiple onchange="loadFolder(event)">
+
+    <div id="playlist"></div>
+  </div>
+
+  <script>
+    let song, fft;
+    let playlist = [];
+    let shuffledIndices = [];
+    let currentIndex = 0;
+    let isShuffle = false;
+
+
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      fft = new p5.FFT(0.8, 128);
+      colorMode(HSB, 360, 100, 100, 100);
+    }
+
+    // Загрузка папки
+    function loadFolder(e) {
+      const files = Array.from(e.target.files).filter(f => f.type.startsWith('audio/'));
+      if (files.length === 0) return;
+
+      playlist = files.map(file => ({
+        name: file.name.replace(/\.[^/.]+$/, ""),
+        url: URL.createObjectURL(file)
+      }));
+
+      renderPlaylist();
+      playTrack(0);
+      if (isShuffle) shufflePlaylist();
+    }
+    function updateVolume(val) {
+      if (song) {
+        song.setVolume(parseFloat(val));
+      }
+      // Обновляем текстовый процент
+      document.getElementById('vol-value').innerText = Math.round(val * 100) + "%";
+    }
+    function renderPlaylist() {
+      const container = document.getElementById('playlist');
+      container.innerHTML = playlist.map((t, i) =>
+        `<div class="track-item ${i === currentIndex ? 'active' : ''}" onclick="playTrack(${i})">${i + 1}. ${t.name}</div>`
+      ).join('');
+    }
+
+    function playTrack(index) {
+      if (song) song.stop();
+      currentIndex = index;
+
+      song = loadSound(playlist[index].url, () => {
+        // Устанавливаем громкость из слайдера перед стартом
+        let currentVol = document.getElementById('volume-slider').value;
+        song.setVolume(parseFloat(currentVol));
+
+        song.play();
+        document.getElementById('track-info').innerText = playlist[index].name;
+        document.getElementById('play-btn').innerText = "PAUSE";
+        renderPlaylist();
+      });
+    }
+
+    function togglePlay() {
+      if (!song) return;
+      if (song.isPlaying()) {
+        song.pause();
+        document.getElementById('play-btn').innerText = "PLAY";
+      } else {
+        song.play();
+        document.getElementById('play-btn').innerText = "PAUSE";
+      }
+    }
+
+    function nextTrack() {
+      if (isShuffle) {
+        // Если очередь пуста или мы в конце — перемешиваем
+        if (shuffledIndices.length === 0) {
+          shufflePlaylist();
+        }
+
+        // Берем первый индекс из перемешанной очереди и удаляем его
+        let nextIndex = shuffledIndices.shift();
+
+        // Страховка: если выпал тот же трек, что играет сейчас — берем следующий
+        if (nextIndex === currentIndex && shuffledIndices.length > 0) {
+          shuffledIndices.push(nextIndex); // кидаем в конец
+          nextIndex = shuffledIndices.shift();
+        }
+
+        playTrack(nextIndex);
+      } else {
+        // Обычный порядок
+        let next = (currentIndex + 1) % playlist.length;
+        playTrack(next);
+      }
+    }
+
+    function prevTrack() {
+      let prev = (currentIndex - 1 + playlist.length) % playlist.length;
+      playTrack(prev);
+    }
+
+    function toggleShuffle() {
+      isShuffle = !isShuffle;
+      if (isShuffle) shufflePlaylist(); // Сразу готовим очередь
+
+      const btn = document.getElementById('shuffle-btn');
+      document.getElementById('shuffle-btn').innerText = `SHUFFLE: ${isShuffle ? 'ON' : 'OFF'}`;
+      document.getElementById('shuffle-btn').classList.toggle('active');
+    }
+    function shufflePlaylist() {
+      // Создаем массив индексов [0, 1, 2, ...]
+      shuffledIndices = playlist.map((_, i) => i);
+
+      // Алгоритм Фишера-Йейтса (честный рандом)
+      for (let i = shuffledIndices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledIndices[i], shuffledIndices[j]] = [shuffledIndices[j], shuffledIndices[i]];
+      }
+    }
+    function seek(e) {
+      if (!song) return;
+      const rect = document.getElementById('progress-container').getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      song.jump(song.duration() * percent);
+    }
+
+    function draw() {
+      // Эффект "Черной дыры" (шлейф)
+      background(1, 2, 8, 35);
+      colorMode(HSB, 360, 100, 100, 100); // Переключаем систему на радужный режим
+
+      // Обновление прогресс-бара
+      if (song && song.isPlaying()) {
+        let currentTime = song.currentTime();
+        let duration = song.duration();
+
+        // 1. Прогресс-бар
+        let p = (song.currentTime() / song.duration()) * 100;
+        document.getElementById('progress-bar').style.width = p + '%';
+
+        // 2. Циферблаты
+        document.getElementById('current-time').innerText = formatTime(currentTime);
+        document.getElementById('remaining-time').innerText = "-" + formatTime(duration - currentTime);
+
+        // 3. Автопереход
+        if (song.currentTime() >= song.duration() - 0.1) nextTrack();
+      }
+
+      // --- ВИЗУАЛИЗАЦИЯ ---
+      if (!song || !song.isPlaying()) {
+        push(); // Изолируем трансформации
+        translate(width / 2, height / 2);
+
+        let pulse = sin(frameCount * 0.03) * 30 + 80; // Базовая пульсация
+        let rotateSpeed = frameCount * 0.01; // Скорость вращения лучей
+
+        // Рисуем лучи (солнышко)
+        for (let i = 0; i < 128; i++) {
+          let angle = map(i, 0, 128, 0, TWO_PI) + rotateSpeed;
+          // Длина лучей тоже немного пульсирует
+          let rayLen = pulse + (i % 2 === 0 ? 40 : 20) + sin(frameCount * 0.1 + i) * 10;
+
+          let x = cos(angle) * rayLen;
+          let y = sin(angle) * rayLen;
+
+          // Цвет переливается от небесного к прозрачному
+          stroke(0, 242, 255, map(sin(frameCount * 0.05 + i), -1, 1, 20, 150));
+          strokeWeight(2);
+          line(0, 0, x, y);
+        }
+
+        // Центральное ядро
+        noStroke();
+        fill(0, 242, 255, 40);
+        ellipse(0, 0, pulse, pulse);
+
+        // Внутренний блик
+        fill(255, 255, 255, 30);
+        ellipse(0, 0, pulse * 0.6, pulse * 0.6);
+        pop();
+        return;
+      }
+
+      // ГРИБНИЦА под музыку
+      // --- ГРИБНИЦА 2.0 // NEURO_SYNC_MODE ---
+      let spectrum = fft.analyze();
+      let bass = fft.getEnergy("bass");
+      let mid = fft.getEnergy("mid");
+      let treble = fft.getEnergy("treble");
+
+      translate(width / 2, height / 2);
+      
+      // Вращение ускоряется от баса (Эффект турбины)
+      // rotate(frameCount * 0.005 + map(bass, 0, 255, 0, 0.005));
+
+      // ОПРЕДЕЛЕНИЕ ОБЩЕГО ЦВЕТА СИСТЕМЫ (Кислотный фильтр)
+      // Если доминирует БАС - уходим в Мадженту/Фиолет
+      // Если доминирует ТРЕБЛ - уходим в Циан/Зелень
+      let systemHue = map(bass, 0, 255, 190, 340); 
+      if (treble > mid && treble > 100) {
+          systemHue = map(treble, 0, 255, 180, 120); // Сдвиг в сторону кислоты
+      }
+
+      const numStrands = 128; // Больше нитей для плотности
+      for (let i = 0; i < numStrands; i++) {
+        // Выравниваем спектр по кругу, чтобы не было "ракушки"
+        // Индекс спектра берем зеркально или сглаженно
+        let specIdx = i;
+        if (i > numStrands / 2) specIdx = numStrands - i;
+        let specVal = spectrum[specIdx]; 
+
+        let angle = map(i, 0, numStrands, 0, TWO_PI);
+
+        // ДИНАМИКА ДЛИНЫ: Бас дает мощный толчок, specVal дает детальный "зуб"
+        let r = 70 + (specVal * 0.6) + (bass * 0.4);
+        r = constrain(r, 0, height / 2.1); // Защита от вылета за экран
+
+        // ВИБРАЦИЯ: "Хвостики" дрожат от высоких частот (Treble)
+        let vibration = sin(frameCount * 0.1 + i) * map(treble, 0, 255, 2, 25);
+        
+        let x = (r + vibration) * cos(angle);
+        let y = (r + vibration) * sin(angle);
+
+        // --- ОТРИСОВКА ЛУЧА ---
+        // Цвет луча: системный тон + микро-отклонение от индекса (радужный отлив)
+        let strandHue = (systemHue + map(i, 0, numStrands, -20, 20)) % 360;
+        
+        stroke(strandHue, 90, 100, map(specVal, 0, 255, 30, 100));
+        strokeWeight(map(specVal, 0, 255, 1, 4));
+        
+        // Лучи растут из невидимого ядра (50px)
+        line(cos(angle) * 50, sin(angle) * 50, x, y);
+
+        // --- НЕЙРОНЫ (ВСПЫШКИ НА КОНЦАХ) ---
+        if (specVal > 160) {
+          // Контрастный цвет для вспышки (инверсия + энергия требла)
+          let flashHue = (strandHue + 120 + map(treble, 0, 255, 0, 60)) % 360;
+          
+          fill(flashHue, 80, 100, 100);
+          noStroke();
+          let dotSize = map(specVal, 0, 255, 3, 12);
+          ellipse(x, y, dotSize, dotSize);
+          
+          // Эффект "Лазерного Bloom"
+          fill(flashHue, 100, 100, 25);
+          ellipse(x, y, dotSize * 3, dotSize * 3);
+        }
+      }
+    }
+    function formatTime(seconds) {
+      let mins = Math.floor(seconds / 60);
+      let secs = Math.floor(seconds % 60);
+      return mins.toString().padStart(2, '0') + ":" + secs.toString().padStart(2, '0');
+    }
+    function windowResized() { resizeCanvas(windowWidth, windowHeight); }
+  </script>
+</body>
+
+</html>
