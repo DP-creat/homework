@@ -19,7 +19,6 @@ body {
     transition: transform 0.3s ease;
     display: block;
     flex-shrink: 0; /* Запрещает карточке уменьшаться */
-    min-height: 120px; /* Минимальная высота, чтобы не схлопывались */
     
     /* Убираем стандартный border, заменяем его на padding */
     padding: 1px; /* ЭТО ШИРИНА ВАШЕГО БОРДЕРА */

@@ -9,66 +9,70 @@
 </head>
 
 <body class="page__body">
+  <canvas id="global-spark-canvas"></canvas>
+  <div class="bento-container">
 
-  <div class="bg-glow"></div>
-
-  <div class="side-utils">
-    <a href="aurora/index.html" class="util-link">AU</a>
-    <a href="crissms/index.html" class="util-link">CS</a>
-  </div>
-
-  <main class="hub-container container">
-    <section class="panorama-grid">
-      <a href="wake-bake/index.html" class="card panorama">
-        <canvas class="card-canvas"></canvas>
-        <div class="card-inner">
-          <span class="card-label">Case</span>
-          <h2 class="card-title">Wake & Bake</h2>
-          <p class="card-desc">.</p>
-        </div>
-      </a>
-      <a href="california/index.html" class="card panorama">
-        <canvas class="card-canvas"></canvas>
-        <div class="card-inner">
-          <span class="card-label">Case</span>
-          <h2 class="card-title">California</h2>
-          <p class="card-desc">.</p>
-        </div>
-      </a>
-      <a href="#" class="card panorama locked">
-        <canvas class="card-canvas"></canvas>
-        <div class="card-inner">
-          <span class="card-label">WIP</span>
-          <h2 class="card-title">Music Ecosystem</h2>
-          <p class="card-desc">Глубокая визуализация звука.</p>
-        </div>
-      </a>
-    </section>
-    <section class="content-wrapper">
-      <div class="hub-links">
-        <!-- Твои работы -->
-        <a href="#" class="card">
-          <canvas class="card-canvas"></canvas>
-          <div class="card-inner">
-            <span class="card-label">Эстетика</span>
-            <h2 class="card-title">Сияние</h2>
-            <p class="card-desc">Интерактивная</p>
-          </div>
-        </a>
-        <a href="#" class="card locked">
-          <canvas class="card-canvas"></canvas>
-          <div class="card-inner">
-            <span class="card-label">WIP</span>
-            <h2 class="card-title">Acoustic Rail</h2>
-            <p class="card-desc">Web Audio плеер (In Progress).</p>
-          </div>
-        </a>
+    <!-- Блок 1: Твое Стерео-Сердце (Канвас живет тут) -->
+    <div class="bento-item card visualizer-card sunset-glow">
+      <canvas id="defaultCanvas0"></canvas>
+      <!-- Твоя центральная кнопка управления -->
+      <div class="main-circle-btn" onclick="handleMainClick()">
+        <span id="main-btn-text">PLAY</span>
       </div>
-    </section>
-    <footer class="hub-footer">
-      <p class="hub-subtitle">Logic & System Engineering</p>
-      <p>© 2026 DP-creat. Все права защищены.</p>
-    </footer>
+      <div class="card-label">CORE_RESONANCE</div>
+    </div>
+
+    <!-- Блок 2: ИИ-Ассистент (Чат) -->
+    <div class="bento-item card ai-chat-card">
+      <div class="card-header">AI_SELF_HELP</div>
+      <div class="chat-display" id="chat-box">
+        <p class="bot-msg">Система готова. Какой узел сегодня оптимизируем?</p>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" placeholder="WRITE_MESSAGE..." id="ai-input">
+        <button class="send-btn">➔</button>
+      </div>
+    </div>
+
+    <!-- Блок 3: Радио Концентрации -->
+    <div class="bento-item card radio-card">
+      <div class="card-label">FOCUS_RADIO</div>
+      <div class="radio-controls">
+        <button onclick="changeStation('LOFI')">LO-FI</button>
+        <button onclick="changeStation('DEEP')">DEEP</button>
+        <button onclick="changeStation('ZEN')">ZEN</button>
+      </div>
+    </div>
+    <div class="bento-item card radio-card">
+      <div class="card-label">FOCUS_RESONANCE</div>
+
+      <div class="radio-grid">
+        <button class="inner-btn card" onclick="changeStation(event, 'LOFI')">
+          <span class="btn-title">LO-FI</span>
+          <span class="btn-desc">CHILL_STEP</span>
+        </button>
+
+        <button class="inner-btn card" onclick="changeStation(event, 'DEEP')">
+          <span class="btn-title">DEEP</span>
+          <span class="btn-desc">TECH_FOCUS</span>
+        </button>
+
+        <button class="inner-btn card active" onclick="changeStation(event, 'ZEN')">
+          <span class="btn-title">ZEN</span>
+          <span class="btn-desc">AMBIENT_VOID</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Блок 4: Кликер / Ресурс дня -->
+    <div class="bento-item card clicker-card" onclick="addEnergy()">
+      <div class="card-label">BIO_RESOURCE</div>
+      <div class="energy-value"><span id="energy-count">85</span>%</div>
+      <div class="progress-mini">
+        <div id="energy-bar" style="width: 85%"></div>
+      </div>
+    </div>
+  </div>
   </main>
 
   <script src="js/main.js"></script>

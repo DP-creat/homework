@@ -12,3 +12,16 @@
   --container-width: 1440px;
   --container-padding: 15px;
 }
+:root {
+  
+  --cyan: #00f2ff;
+  --font-main: 'Inter', 'Monospace', sans-serif;
+}
+:root {
+  --bg-light: #f0f4f8;        /* Светлый серо-голубой лед */
+  --glass-light: rgba(255, 255, 255, 0.7); /* Плотное белое стекло */
+  --glass-light-border: rgba(0, 0, 0, 0.05); /* Почти невидимые границы */
+  --cyan: #0070f3;          /* Глубокий синий (как у Apple/Next.js) */
+  --accent: #00d1ff;        /* Яркий голубой для акцентов */
+  --text: #1a1a1b;          /* Почти черный для идеальной читаемости */
+}
