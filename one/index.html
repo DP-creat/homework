@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One</title>
+  <link href="css/index.css" rel="stylesheet">
+  <link rel="shortcut icon" type="image/x-icon" href="./icons/Di.ico">
+</head>
+
+<body class="page__body main__body">
+  <!-- <canvas id="global-spark-canvas"></canvas> -->
+  <div class="container bento-container">
+
+    <!-- Блок 1: Твое Стерео-Сердце (Канвас живет тут) -->
+    <div class="bento-item card visualizer-card sunset-glow">
+      <div class="core-scanner" onclick="window.toggleChrono()">
+            <div class="scan-ring" style="animation-play-state: paused;"></div>
+            <div class="core-data">
+              <span class="core-label">SYNC STATUS</span>
+              <span class="core-value" id="sync-percent">Nn%</span>
+            </div>
+          </div>
+      <!-- Твоя центральная кнопка управления -->
+      <!-- <div class="main-circle-btn" onclick="handleMainClick()">
+        <span id="main-btn-text">PLAY</span>
+      </div> -->
+      <div class="card-label">fixIt</div>
+      <button class="lava-btn clicker-btn" onclick="location.href='clickers.html'">Creat Clickers</button>
+    </div>
+
+    <!-- Блок 2: ИИ-Ассистент (Чат) -->
+    <div class="bento-item card ai-chat-card">
+      <div class="card-header">AI_SELF_HELP</div>
+      <div class="chat-display" id="chat-box">
+        <p class="bot-msg">Система готова. Какой узел сегодня оптимизируем?</p>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" placeholder="WRITE_MESSAGE..." id="ai-input">
+        <button class="send-btn">➔</button>
+      </div>
+    </div>
+
+
+    <div class="bento-item card radio-card">
+      <div class="card-label">FOCUS_RESONANCE</div>
+
+      <div class="radio-grid">
+        <button class="inner-btn lava-btn card" onclick="location.href='playFire.html'">
+          <span class="btn-desc">playEr / streamEr</span>
+          <span class="btn-title">Fire</span>
+        </button>
+
+        <button class="inner-btn lava-btn card" onclick="location.href='playLo.html'">
+          <span class="btn-desc">playEr / streamEr</span>
+          <span class="btn-title">Lo</span>
+          
+        </button>
+
+        <!-- <button class="inner-btn card" onclick="changeStation(event, 'ZEN')">
+          <span class="btn-title">ZEN</span>
+          <span class="btn-desc">AMBIENT_VOID</span>
+        </button> -->
+      </div>
+    </div>
+
+    <!-- Блок 4: Кликер / Ресурс дня -->
+    <div class="bento-item card clicker-card" onclick="addEnergy()">
+      <div class="card-label">BIO_RESOURCE</div>
+      <div class="energy-value"><span id="energy-count">Load 85</span>%</div>
+      <div class="progress-mini">
+        <div id="energy-bar" style="width: 85%"></div>
+      </div>
+    </div>
+  </div>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/fixit.js"></script>
+</body>
+
+</html>

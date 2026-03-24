@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html class="page" lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/fixit.css">
+  <link rel="shortcut icon" type="image/x-icon" href="./icons/Di.ico">
+  <title>fixIt</title>
+
+</head>
+
+<body class="page__body">
+  <div class="bg-glow">
+
+    <header class="header">
+      <div class="container header__container">
+        <div class="header__title">
+          <!-- <h1 class="hub-title">DP-Creat</h1> -->
+          <p class="hub-subtitle">INTERFACE //ARC-9</p>
+        </div>
+        <!-- КРЕСТИК ЛАЗЕР -->
+        <div class="laser-cross" onclick="deepResetCounters()" title="DEEP RESET">
+          <div class="line-v"></div>
+          <div class="line-h"></div>
+        </div>
+        <!-- ПОЛНЫЙ СБРОС -->
+        <button class="reset-btn" onclick="hardResetAll()" title="NUCLEAR RESET">NUCLR RESET</button>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <section class="clickers">
+        <div class="container clickers__container">
+          <!-- КЛИКЕРЫ -->
+          <div class="battery-group"></div>
+        </div>
+      </section>
+
+      <div class="container hud-panel__container">
+        <!-- КРАФТЕР КЛИКЕРОВ -->
+        <div class="hud-panel creat__click clicker">
+          <div class="creator-form">
+            <input type="text" id="cell-name" placeholder="name clicker">
+            <input type="number" id="cell-limit" placeholder="limit click">
+            <button onclick="createNewCell()">creat clicker</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="info">
+        <div class="container info__container">
+          <!-- ТАБЛО -->
+          <div class="core-scanner" onclick="window.toggleChrono()">
+            <div class="scan-ring" style="animation-play-state: paused;"></div>
+            <div class="core-data">
+              <span class="core-label">SYNC STATUS</span>
+              <span class="core-value" id="sync-percent">Nn%</span>
+            </div>
+          </div>
+          <!-- КНОПКИ -->
+          <nav class="tectonic-nav">
+            <button class="lava-btn" onclick="togglePanel('creat__click')">Creat Click</button>
+            <button class="lava-btn" onclick="togglePanel('kinetic')">FixIt</button>
+            <button class="lava-btn" onclick="togglePanel('log')">Logs</button>
+            <button class="lava-btn" onclick="location.href='settings.html'">instruct</button>
+          </nav>
+        </div>
+      </section>
+
+      <div class="container hud-panel__container">
+        <!-- ФиксИт -->
+        <div class="hud-panel kinetic">
+          <div class="target-input">
+            <input type="text" id="ex-input" placeholder="new">
+            <button onclick="logExercise()">FixIt</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="log">
+        <div class="container footer__container">
+          <!-- ЛОГИ -->
+          <div id="exercise-log" class="hud-log"></div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+
+  
+  <script src="js/main.js"></script>
+  <script src="js/fixit.js"></script>
+</body>
+
+</html>

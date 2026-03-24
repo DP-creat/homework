@@ -1,0 +1,346 @@
+html, body {
+    height: 100dvh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* ГЛОБАЛЬНЫЙ ЗАПРЕТ СКРОЛЛА */
+    
+}
+
+.page {
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--bg-cos);
+    line-height: 1.2;
+}
+.page__body {
+    background-color: var(--accent);
+    color: var(--accent);
+    display: flex;
+    flex-direction: column;
+}
+.page__body--no-scroll {
+    overflow-y: hidden;
+}
+
+
+/* =========================== */
+.cell-svg, .cell-header, .scan-ring {
+    pointer-events: none;
+    /* Пропускает клик сквозь себя */
+}
+.battery-cell, .mini-reset, .delete-unit, .reset-btn, .lava-btn, 
+.core-scanner, button {
+    pointer-events: auto; /* Эти элементы должны принимать клик */
+    /* Убирает синюю/серую вспышку при тапе на мобилках */
+    -webkit-tap-highlight-color: transparent;    
+    /* Дополнительно: убирает контур при фокусе (если мешает) */
+    outline: none;
+}
+
+.header, .footer {
+    flex-shrink: 0; /* Запрещаем сжиматься */
+}
+
+.container {
+    width: min(var(--container-width), 100% - var(--container-padding) * 2);
+    margin-inline: auto;
+}
+/*------ туман ----------------*/
+.bg-glow {
+    background: radial-gradient(circle at center, var(--electric-sky) -300%, var(--bg-cos) 100%);
+    /* #6ad8d8 #5f5f5fec */
+}
+
+.header {
+}
+.main {
+    height: calc(100dvh - 90px); /* Вычитаем высоту хедера и футера */
+    flex: 1; /* ЭТО ГЛАВНОЕ: main забирает всё свободное место, толкая футер вниз */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 5px; /* Зазор перед футером */
+    overflow: hidden; /* Запрещаем скролл всей страницы */
+    min-height: 0; /* Важный фикс для Firefox/Chrome во Flex-боксах */
+}
+
+.footer {
+    margin-bottom: 20px;
+    /* margin-top: 50px; */
+    /* Учитываем системные зоны навигации смартфонов */
+    padding-bottom: env(safe-area-inset-bottom, 20px); 
+    position: relative;
+    z-index: 200;
+}
+
+.hud-panel__container {
+    gap: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ------------clickers--------------------- */
+.tectonic-nav__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; /* Центрирует кнопки внутри себя */
+    gap: 15px;
+    height: 100%;
+    width: auto; /* ВАЖНО: блок не должен быть 100% */
+    flex: 1; /* Позволяет блоку гибко стоять в центре */
+}
+
+
+/* ---=================-----HEADER============================================== */
+.header__container {
+    /* position: relative; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* width: 100%; */
+    padding: 0 40px;
+    /* Высота как у сканера */
+    gap: 60px;
+    margin-block: 5px;
+}
+.header__title {
+    text-align: right;
+    margin: 0;
+}
+.hub-title {
+    letter-spacing: 5px;
+    font-size: var(--fs-22);
+    /* text-transform: uppercase; */
+    margin: 0;
+    text-shadow: 0 0 15px var(--cyan);
+}
+.hub-subtitle {
+    color: var(--cyan);
+    font-size: var(--fs-10);
+    opacity: 0.7;
+    letter-spacing: 2px;
+}
+
+/* ===========MAIN============================================================================= */
+
+/* 2. Секция кликеров забирает всё свободное место */
+.clickers {
+    flex: 1; 
+    overflow-y: auto; /* Включаем внутренний скролл */
+    padding: 20px 0;
+    -webkit-overflow-scrolling: touch;
+    /* Убираем горизонтальный скролл, если круги не влезают */
+    overflow-x: hidden; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Внутри секции кружки тоже липнут к низу */
+    /* Кастомный скроллбар под твой неон */
+    scrollbar-width: thin;
+    scrollbar-color: var(--cyan) transparent;
+}
+.clickers::-webkit-scrollbar {
+    width: 5px;
+}
+.clickers::-webkit-scrollbar-track {
+    background: transparent;
+}
+.clickers::-webkit-scrollbar-thumb {
+    background: var(--cyan);
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--cyan);
+}
+
+
+.clickers__container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.battery-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0;
+    justify-content: center;
+    align-items: flex-end; /* Прижимает круги к нижней границе секции */
+    margin-top: auto; /* Толкает группу вниз внутри скролл-зоны */
+}
+
+/* ------- */
+.creat__click {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
+.creat__click.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+    /* Активная панель всегда сверху */
+    /* 3. ФИНАЛЬНЫЕ РАЗМЕРЫ */
+    /* height: 100%; */
+    /* max-width: 600px; */
+}
+
+/* <!-- КРАФТЕР КЛИКЕРОВ --> */
+.creator-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.creator-form input {
+    background: #000;
+    border: 1px solid var(--glass-border);
+    color: var(--cyan);
+    padding: 12px;
+    outline: none;
+}
+.creator-form button {
+    background: var(--cyan);
+    color: #000;
+    border: none;
+    font-weight: 900;
+    /* text-transform: uppercase; */
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.creator-form button:hover {
+    box-shadow: 0 0 20px var(--cyan);
+}
+
+
+.info {
+}
+.info__container {
+    width: 100%;
+    max-width: var(--container-width);
+    /* Убедись, что ширина 1440 */
+    margin: 0 auto;
+    padding-inline: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    /* Расталкивает элементы */
+    align-items: center;
+    gap: 20px;
+    
+}
+/* ====================================================== */
+/* АДАПТИВ (ПЕРЕНОС ВНИЗ) - Порог 768px (стандарт планшета) */
+/* ====================================================== */
+
+
+
+.tectonic-nav {
+    flex-shrink: 0;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    gap: 15px;
+    height: 100%;
+    max-width: 150px;
+    width: 100%;
+}
+
+/* -KINETIC_______________ */
+.kinetic {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
+.kinetic.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+    /* Активная панель всегда сверху */
+    /* 3. ФИНАЛЬНЫЕ РАЗМЕРЫ */
+    height: 60px;
+    width: 100%;
+}
+
+/*-Логи и ввод (Kinetics)-*/
+.target-input {
+    padding-inline: 10px;
+    display: flex;
+    gap: 10px;
+}
+.target-input input {
+    flex: 1;
+    background: #000;
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    padding: 10px;
+    outline: none;
+}
+.target-input button {
+    background: var(--cyan);
+    color: #000;
+    border: none;
+    padding: 0 20px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+
+/* ======FooTER============================================== */
+.log {
+}
+.footer__container {
+}
+.hud-log {
+}
+
+/* --------------------------------------------------------------------------------- */
+/* Примени это к своим кнопкам или кругам: */
+.sky-glow {
+    color: var(--ghost-sky); /* Текст почти белый */
+    text-shadow: 
+        0 0 5px var(--sky-cyan),
+        0 0 15px var(--sky-cyan),
+        0 0 30px var(--electric-sky);
+    
+    /* Для блоков/бордеров */
+    border-color: var(--sky-cyan);
+    box-shadow: 
+        0 0 10px var(--glass-border),
+        inset 0 0 5px var(--sky-cyan);
+}
+/* Пример для твоего Core-Scanner или Текста */
+.nebula-glow {
+    color: var(--sky-ghost); /* Текст почти белый, но с оттенком льда */
+    text-shadow: 
+        0 0 5px var(--sky-bright),
+        0 0 15px var(--sky-primary),
+        0 0 30px rgba(0, 170, 255, 0.5); /* Мягкое синее облако вокруг */
+}
+.sky-border {
+    border: 1px solid var(--sky-primary);
+    box-shadow: 
+        inset 0 0 10px rgba(0, 170, 255, 0.2),
+        0 0 15px rgba(0, 170, 255, 0.3);
+}
+/* ------------------------------------------------------------------------------- */
+
+@media (max-width: 850px) {
+
+    /* Подобрал под ширину твоей панели 600 + бока */
+    .info__container {
+        flex-wrap: wrap;
+        /* Позволяет падать вниз */
+    }
+
+
+    .hud-panel.active {}
+}
