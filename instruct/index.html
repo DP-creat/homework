@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+        :root {
+            --cyan: #00f2ff;
+            --glass: rgba(0, 242, 255, 0.05);
+            --bg: #010208;
+            --accent: #ff00ff;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--cyan);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            line-height: 1.6;
+        }
+
+        .guide-container {
+            max-width: 600px;
+            padding: 40px 20px;
+            border-left: 1px solid var(--glass);
+            border-right: 1px solid var(--glass);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--cyan);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px -10px var(--cyan);
+        }
+
+        h1 { letter-spacing: 5px; margin: 0; font-size: 2rem; }
+        .subtitle { font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; }
+
+        section {
+            margin-bottom: 40px;
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid rgba(0, 242, 255, 0.1);
+        }
+
+        h2 {
+            color: #fff;
+            font-size: 1.2rem;
+            border-left: 4px solid var(--cyan);
+            padding-left: 15px;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        .step { margin-bottom: 15px; }
+        .key { 
+            color: var(--accent); 
+            font-weight: bold; 
+            background: rgba(255, 0, 255, 0.1); 
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .gesture-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .gesture {
+            padding: 15px;
+            border: 1px dashed var(--cyan);
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            opacity: 0.4;
+            margin-top: 50px;
+        }
+
+        .btn-demo {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-demo:hover {
+            background: var(--cyan);
+            color: var(--bg);
+        }
+    </style>
+</head>
+<body>
+  <div class="guide-container">
+    <header>
+        <h1>ARC-9</h1>
+        <div class="subtitle">Personal Interface Protocol // Ver. 1.0.4</div>
+    </header>
+
+    <section>
+        <h2>01. Запуск системы</h2>
+        <div class="step">Найди <span class="key">Центральный Круг</span> в середине экрана. Это твой главный переключатель:</div>
+        <ul>
+            <li><strong>Клик 1:</strong> Режим Настройки. Появляются кнопки управления. Плей/стоп на клик/тап трек</li>
+            <li><strong>Клик 2:</strong> Режим Фокуса. Оставляем только музыку и визуал. Плей/стоп на клик/тап экран</li>
+            <li><strong>Клик 3:</strong> Режим не придуман. Блок клик/тап</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>02. Загрузка музыки</h2>
+        <div class="step">В активном режиме (после первого клика) нажми кнопку <span class="key">load folder</span>.</div>
+        <p>Выбери любые файлы с песнями на своем устройстве.</p>
+    </section>
+
+    <section>
+        <h2>03. Управление вместо кнопок</h2>
+        <p>На экране нет привычных кнопок "Вперед" или "Назад". Управляй прямо через <span class="key">Название песни</span> внизу:</p>
+        <div class="gesture-box">
+            <strong>•	Смахнуть влево (Swipe Left): Следующая песня.</strong>
+            <strong>•	Смахнуть вправо (Swipe Right): Предыдущая песня.</strong>
+            <strong>•	Тап (просто нажать): Поставить на паузу или снова включить (Play/Pause).</strong>
+        </div>
+    </section>
+
+    <section>
+        <h2>04. Плейлист и Звук</h2>
+        <div class="step">Как только музыка заиграет, вверху появится кнопка  <span class="key">play list</span>, чтобы открыть панель управления.</div>
+        <ul>
+            <li><strong>SEARCH:</strong> Начни писать имя, чтобы мгновенно найти песню.</li>
+            <li><strong>VOL:</strong> Потяни ползунок для изменения громкости.</li>
+            <li><strong>SHUFFLE:</strong> Включи "On", чтобы слушать музыку в случайном порядке.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>05. Режим Стрима (PC)</h2>
+        <p>Кнопка <span class="key">stream</span> (только на компе) позволяет визуализатору "слушать" любые вкладку твоего браузера (YouTube) или приложение винды. Нажми её и выбери нужную вкладку в окне браузера.</p>
+    </section>
+
+    <footer>
+      Короткая шпаргалка:<br>
+        •	Центр: Вкл/Выкл.<br>
+        •	Текст трека: Нажать — пауза, свайп — листать.<br>
+        •	play list: Список песен и громкость.<br>
+        •	load folder: Загрузить свою музыку.
+    </footer>
+</div>
+
+</body>
+</html>
