@@ -195,7 +195,7 @@
   position: relative;
   opacity: 0.6;
   transition: 0.125s;
-
+  pointer-events: auto; 
   font-size: var(--fs-12);
 }
 
