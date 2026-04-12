@@ -427,6 +427,7 @@ input[type="file"] {
   padding-block: 9px;
   font-size: var(--fs-24);
   outline: none;
+  pointer-events: auto; 
 }
 
 #playlist-search::placeholder {
