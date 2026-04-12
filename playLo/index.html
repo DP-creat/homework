@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html class="page" lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="css/playFi.css">
+  <script src="js/p5.min.js"></script>
+  <script src="js/p5.sound.min.js"></script>
+  <title>//play</title>
+</head>
+
+<body class="page__body">
+  
+  <div id="stars-layer"></div>
+  <div id="play-panel" class="canvas-container"></div>
+  <div class="container">
+    <div class="panel playEr__panel playEr">
+      <div class="playlist" id="playlist"><!--  треки --></div>
+      <input type="text" id="playlist-search" placeholder="search" oninput="handleSearch(this.value)">
+      <div class="nav-playlist">
+        <button class="btnEr" id="shuffle-btnEr" onclick="toggleShuffle()">
+          shuff: off
+        </button>
+        <div class="volume-mini">
+          <span class="vol-label">
+            VOL
+          </span>
+          <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5"
+            oninput="updateVolume(this.value)">
+          <span id="vol-value">
+            50%
+          </span>
+        </div>
+      </div>
+      <div id="progress-container" onclick="seek(event)">
+        <div class="time-meta"></div>
+        <div id="progress-bar"></div>
+        <span id="current-time">00:00</span>
+        <span id="remaining-time">-00:00</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container ui-wrapper">
+    <div id="ui-layer" class="state-0">
+
+      <!-- невидимый щит-пауза -->
+      <div id="action-shield" class="full-screen-clicker" onclick="window.togglePlay()"></div>
+
+      <!-- ЦЕНТР: Главный круг (якорь 120px) -->
+      <div class="circle-btnEr" onclick="handleMainClick()">
+        <div class="main-circle-btnEr">
+          <span id="main-btnEr-text"></span>
+        </div>
+      </div>
+
+      <!-- КНОПКИ ПЕРВЫЕ НА СТАТЕ 1 -->
+      <div class="nav-meta">
+        <button id="sync-btnEr" class="btnEr" onclick="syncSystemAudio()">
+          <span class="letter">st</span><span class="hidden-part">ream</span>
+        </button>
+
+        <label for="file-input" id="load-btnEr" class="btnEr">
+          <span class="letter">l</span><span class="hidden-part">oad</span>
+          <span class="gap"></span>
+          <span class="letter">f</span><span class="hidden-part">older</span>
+        </label>
+      </div>
+
+      <div id="playlist-btn">
+        <button class="btnEr pl" onclick="window.togglePanel('playEr', 1)">
+          <span class="letter">p</span><span class="hidden-part">lay</span>
+          <span class="gap"></span>
+          <span class="letter">l</span><span class="hidden-part">ist</span>
+        </button>
+      </div>
+
+      <!-- кнопка АКТИВ и ТРЭК -->
+      <div class="hud-bottom">
+        <!-- ТРЕК И ПЛЕЙ -->
+        <div id="track-info-wrapper" class="track-info-wrapp">
+          <div id="track-info">
+          </div>
+        </div>
+      </div>
+
+      <!-- Скрытый инпут для файлов -->
+      <input type="file" id="file-input" multiple onchange="loadFolder(event)" style="display:none;">
+    </div>
+  </div>
+
+  <!-- <script src="js/play.js"></script> -->
+  <script src="js/panel.js"></script>
+  <script src="js/playEr.js"></script>
+  <script src="js/playLo.js"></script>
+</body>
+
+</html>
