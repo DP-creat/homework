@@ -543,11 +543,10 @@ body.panel-open .nav-meta {
 }
 
 @media (max-width: 1200px), (pointer: coarse) {
-  .nav-meta {
-    flex-wrap: wrap;
-    gap: 15px;
-    bottom: 86vh;
-    justify-content: right;
+  #load-btnEr {
+    position: fixed;
+    top: 30px;
+    right: 100px;
   }
 
   .pl {
