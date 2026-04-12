@@ -1,0 +1,95 @@
+:root {
+    /* font */
+    --font-body: "ShareTechMono", sans-serif;
+    --font-text: "ShareTech", sans-serif;
+    --font-size-text: 16.8px;
+
+    /* Микро-декор */
+    --fs-8: clamp(7px, 0.1vw + 7px, 9px);
+    /* 8px */
+    --fs-10: clamp(9px, 0.15vw + 9px, 10px);
+    /* 10px */
+    --fs-12: clamp(10px, 0.2vw + 11px, 12px);
+    /* 12px */
+
+    --fs-14: clamp(12px, 0.25vw + 11px, 14px);
+    /* 16.8 1.2*/
+    --fs-16: clamp(14px, 0.4vw + 11px, 16px);
+    /* 19.2 1.2*/
+    --fs-18: clamp(15px, 0.6vw + 11px, 18px);
+    /* 21.6 1.2*/
+    --fs-22: clamp(18px, 0.8vw + 12px, 22px);
+    /* 27.5 1.25*/
+    --fs-24: clamp(18px, 1vw + 11px, 24px);
+    /* 28.8 1.2*/
+    --fs-32: clamp(22px, 1.25vw + 14px, 32px);
+    /* 38.4 1.2*/
+    --fs-42: clamp(28px, 2.5vw + 10px, 42px);
+    /* 52.5 1.25*/
+    --fs-58: clamp(32px, 3.5vw + 12px, 58px);
+    /* 69.6 1.2*/
+    /* ----------------------------------- */
+
+
+    /* colors */
+    --bg: #050505;
+    --bg-cos: #02040a;
+    --bg-light: #f0f4f8;
+
+    --accent: #fff;
+
+    --glass: #00f2ff0d;
+    --glass-border: #ffffff1a;
+    --glass-border2: #00f2ff33;
+
+    --glass-light: #00f2ff80;
+    --glass-light2: #ffffffb3;
+    --glass-inher: inherit;
+    --glass-transp: transparent;
+
+    --cyan: #00f2ff;
+    --sky-cyan: #7df9ff;
+    --sky-cyan2: #00ccff;
+    
+    --electric-sky: #00e5ff;
+    --ghost-sky: #e0ffff;
+
+    --sky-primary: #00aaff;
+    --sky-bright: #87ceeb;
+    --sky-ghost: #f0f8ff; 
+
+
+    --red: #ff0000;
+    --red-2: #ff0055;
+
+    --orange: #ff4e00;
+    --blue: #0a1128;
+    --Indigo: #1c1c54;
+    --violet: #5e3a8c;
+    --magenta: #ff00ff;
+    --golden: #ffcc00;
+    --golden-2: #ffd700;
+    --purple: #4a0e4e;
+
+    
+    --clr-1: #ff0055; --clr-2: #ff7700; --clr-3: #ffff00;
+    --clr-4: #00ff00; --clr-5: #00f2ff; --clr-6: #3300ff; --clr-7: #ff00ff;
+
+    /* container */
+    --container-width: 1440px;
+    --container-padding: 15px;
+
+    /* transition */
+    --transition-time: 0.2s;
+
+    /* layers */
+    --layer-0: -1;
+    --layer-1: 1;
+    --layer-2: 2;
+    --layer-3: 3;
+    --layer-4: 4;
+}
+
+/* background: radial-gradient(circle at center, #0a151a 0%, #050505 100%); */
+/* background: linear-gradient(180deg, #0c1445 0%, #00f2ff 40%, #ff00ff 70%, #ff4e00 100%); */
+
