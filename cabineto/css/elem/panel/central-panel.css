@@ -1,0 +1,18 @@
+.central-panel1 {
+  background: radial-gradient(circle at center, var(--sky-cyan) -1000%, rgba(125, 249, 255, 0.01) -1000%);
+
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+
+
+  box-shadow:
+    0 10px 10px rgba(0, 0, 0, 0.5),
+    0 0 5px 1px var(--ghost-sky),
+    inset 0 0 5px 3px rgba(2, 4, 10, 0.4),
+    inset 0 2px 5px rgba(224, 255, 255, 0.72);
+
+  /* border: 2px solid rgba(224, 255, 255, 0.2); */
+  border: 2px solid var(--ghost-sky);
+
+  border-radius: 6px;
+}

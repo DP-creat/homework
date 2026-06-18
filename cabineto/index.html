@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Multi-agent simulation of consciousness</title>
+
+  <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body class="page__body">
+  <canvas id="global-spark-canvas"></canvas>
+
+  <div class="main-wrapper"><!--  master-wrapper -->
+    <main class="central-main bbbl"><!--  glass-monolith -->
+
+
+      <header class="central-header">
+        <div class="header-left-zone">
+          <div class="masc-toggle-container" title="Управление частицами (F2)">
+            <span class="toggle-label">SPARKS</span>
+            <label class="switch-slider-box">
+              <!-- Сам чекбокс скрыт, он нужен только для логики клика -->
+              <input type="checkbox" id="masc-fx-toggle" onclick="window.toggleSystemEffects()">
+              <!-- Это физический ползунок-круг, который будет двигаться -->
+              <span class="neon-slider-track"></span>
+            </label>
+          </div>
+
+        </div>
+        <div class="clickers__reset">
+
+          <!-- КРЕСТИК ЛАЗЕР -->
+          <div class="laser-cross" onclick="deepResetCounters()" title="DEEP RESET">
+            <div class="line-v"></div>
+            <div class="line-h"></div>
+          </div>
+          <!-- ПОЛНЫЙ СБРОС -->
+          <button class="reset-btn" onclick="hardResetAll()" title="NUCLEAR RESET">NUCLR RESET</button>
+        </div>
+        <!-- Правая часть для времени (Хронометра) -->
+        <div class="header-right-zone">
+          <!-- Датчик сканера. Изначально плоский и аккуратный под высоту хедера -->
+          <div class="core-scanner" onclick="window.toggleChrono()">
+            <div class="scan-rail"></div>
+            <!-- ГОЛОГРАФИЧЕСКОЕ КОЛЬЦО. Изначально его нет в памяти (display: none) -->
+            <div class="scan-ring" style="animation-play-state: paused;"></div>
+
+            <div class="core-data">
+
+              <!-- Наше цифровое табло, встроенное в шапку -->
+              <span class="core-value" id="sync-percent">Nn%</span>
+            </div>
+
+          </div>
+        </div>
+        <!-- Другие элементы хедера (время, инфо) -->
+      </header>
+
+      <div class="glass-body">
+        <!-- Секция 1: АТОМ (Главная) -->
+        <section class="module-view front-module" data-title="M" data-info-anchor>
+          <div class="mini-clicker__container ">
+
+            <div id="active-hardware-window" class="active-hardware-window">
+              <!-- <div class="window-placeholder">ВЫБЕРИТЕ КЛИКЕР-НОДУ В ЛЕНТЕ</div> -->
+              <div class="window-content" id="focused-node-display" style="display: none;">
+                <!-- Сюда прилетит кликер -->
+              </div>
+            </div>
+
+            <!-- ЭТАЖ 2: Лента иконок под окошком -->
+            <div class="status-dock-wrapper bbbl">
+              <div class="status-dock"><!-- иконки-квадраты кликеров --></div>
+            </div>
+
+            <!-- НОВЫЙ БЛОК: Квадрат с цитатами (Элемент 3) -->
+            <div class="quotes-box">
+              <p id="quote-text">Загрузка цитаты...</p>
+            </div>
+
+            <div class="kinetic bbbl">
+              <div class="target-input">
+                <input type="text" id="ex-input" placeholder="new" autocomplete="off">
+                <button class="lava-btn fixit-btn" onclick="logExercise()">FixIt</button>
+              </div>
+
+            </div>
+          </div>
+          <!-- ФиксИт -->
+
+
+          <div class="panel log hud-log close-inside bbbl" data-name="log" id="exercise-log">
+            <div class="container footer__container">
+              <!-- Сюда JS будет штамповать строки .log-entry -->
+              <div id="exercise-log-content"></div>
+            </div>
+          </div>
+          <template class="module-info">
+            <h3 class="neon-text">NEURAL INTERFACE</h3>
+            <p>Прямой канал связи с ядром системы. Используйте естественный язык для запросов.</p>
+            <div class="info-tip">Совет: Спросите о статусе "Hardware Fixit".</div>
+          </template>
+
+        </section>
+
+        <!-- Секция 2: КЛИКЕРЫ (Фикситы) -->
+        <section class="module-view chat-module" data-title="C">
+          <!-- Твой МАЯК для инфо (вложенный шаблон) -->
+          <template class="module-info">
+            <h3 class="neon-text">NEURAL INTERFACE</h3>
+            <p>Прямой канал связи с ядром системы. Используйте естественный язык для запросов.</p>
+            <div class="info-tip">Совет: Спросите о статусе "Hardware Fixit".</div>
+          </template>
+
+          <div id="survey-wizard">
+            <button class="lava-btn" onclick="startChemicalAssessment()">ЗАПУСТИТЬ СИНХРОНИЗАЦИЮ ХИМИИ</button>
+          </div>
+          <!-- Твой Атом здесь -->
+          <!-- КОНТЕЙНЕР ЧАТА (тот самый объект, который будет светиться) -->
+          <div class="chat-inner-container bbbl" data-info-target>
+            <div class="chat-messages" id="atom-messages">
+              <div class="msg system">SESSION_INITIALIZED... READY_TO_LINK</div>
+              <div class="msg ai">Приветствую. Ядро Атома стабильно. Какие данные вас интересуютsscczc?</div>
+            </div>
+            <div class="chat-input-zone">
+              <input type="text" id="atom-input" placeholder="Введите команду..." autocomplete="off">
+              <!-- Добавили классы btn-tool и lava-effect, чтобы кнопка светилась белым неоном наружу -->
+              <button class="chat-send-btn lava-btn" onclick="sendMessage()">SEND</button>
+            </div>
+          </div>
+
+        </section>
+
+        <div class="panel panel-glass clickers" data-name="clickers">
+
+          <template class="module-info">
+            <h3 class="neon-text">HARDWARE FIXIT</h3>
+            <p>Интерфейс обслуживания внешних модулей.</p>
+            <ul class="info-list">
+              <li>Синие: Ресурс дня</li>
+              <li>Красные: Перерасход</li>
+            </ul>
+          </template>
+
+
+          <div class="main__clicker">
+
+            <section class="clickers-group ">
+              <div class="clickers__container ">
+                <!-- КЛИКЕРЫ -->
+                <div class="battery-group "></div>
+              </div>
+            </section>
+
+            <div class="creat__click">
+              <div class="creator-form">
+                <div class="cell-name-wrapper">
+                  <input type="text" id="cell-name" name="clicker-name" autocomplete="off" spellcheck="false"
+                    placeholder="name" maxlength="8">
+                </div>
+                <div class="limit-input-wrapper">
+                  <input type="number" id="cell-limit" name="clicker-limit" autocomplete="off" placeholder="limit"
+                    max="999">
+                </div>
+                <button class="fonts-btn" onclick="createNewCell()">ок</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <footer class="central-footer-z"></footer>
+
+    </main>
+    <div class="static-panel-overlay">
+      <div class="glass-body-spacer"></div>
+      <footer class="central-footer"><!--  monolith-footer -->
+        <div class="footer-left"></div>
+        <div class="tool-dock">
+          <button class="tool-anchor" data-panel-trigger onclick="switchModule('front')">
+            <div class="btn-tool footer-btn">Гл<span class="stealth">авный</span></div>
+          </button>
+
+          <button class="tool-anchor" data-panel-trigger onclick="switchModule('chat')">
+            <div class="btn-tool footer-btn">ИИ<span class="stealth"></span></div>
+          </button>
+        </div>
+
+        <div class="footer-right">
+          <!-- <button class="tool-anchor tool-cl-btn" data-panel-trigger
+            onclick="togglePanel('clickers', { isExclusive: true })">
+            <div class="btn-tool">Cl<span class="stealth">ickers</span></div>
+          </button> -->
+          <button class="tool-anchor tool-cl-btn" data-panel-trigger
+            onclick="togglePanel('clickers', { isExclusive: true })">
+            <div class="btn-tool footer-btn">Кл<span class="stealth">икеры</span></div>
+          </button>
+
+
+        </div>
+      </footer>
+    </div>
+    <div class="light-pedestal"></div>
+  </div>
+
+  <!-- ИНФО кнопка -->
+  <button class="info-pull-trigger" data-panel-trigger onclick="showModuleInfo()">
+    <div class="pull-circle">
+      <span>i</span>
+      <div class="circle-pulse"></div>
+    </div>
+  </button>
+  <!-- Слой-затенитель -->
+  <div id="info-overlay" class="info-overlay" onclick="hideModuleInfo()"></div>
+  <!-- Слой с контентом инструкции -->
+  <div id="info-layer" class="info-layer">
+    <div class="info-content">
+      <!-- Сюда JS будет копировать текст из <template> -->
+    </div>
+    <button class="close-info-btn lava-btn" onclick="hideModuleInfo()">закрыть</button>
+  </div>
+
+
+
+
+
+
+
+  <script src="js/panTest.js"></script>
+  <script src="js/bbbl.js"></script>
+  <script src="js/modul.js"></script>
+  <script src="js/showInfo.js"></script>
+  <script src="js/btnClicker.js"></script>
+  <script src="js/fixIt.js"></script>
+  <script src="js/chrono.js"></script>
+  <script src="js/central.js"></script>
+  <script type="module" src="js/quotes.js"></script>
+  <script src="js/quotesData.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/chemicalAssessment.js"></script>
+</body>
+
+</html>

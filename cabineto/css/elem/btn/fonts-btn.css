@@ -1,0 +1,66 @@
+.fonts-btn {
+  color: var(--glass-light);
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s ease;
+}
+
+/* @media (hover: hover) and (pointer: fine) {
+  .fonts-btn:hover {
+    box-shadow:
+      inset 0 0 10px rgba(224, 255, 255, 0.05),
+      0 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow:
+      0 0 4px rgba(224, 255, 255, 0.9),
+      0 0 12px var(--cyan),
+      0 0 25px rgba(0, 242, 255, 0.6);
+    color: var(--ghost-sky);
+  }
+} */
+@media (hover: hover) and (pointer: fine) {
+  .fonts-btn:hover {
+    /* box-shadow:
+      inset 0 0 10px rgba(224, 255, 255, 0.05),
+      0 2px 4px rgba(0, 0, 0, 0.5); */
+    text-shadow:
+      0 0 4px rgba(224, 255, 255, 0.9),
+      0 0 12px var(--cyan),
+      0 0 25px rgba(0, 242, 255, 0.6);
+    color: var(--ghost-sky);
+  }
+
+}
+
+
+.fonts-btn.active {}
+
+
+.fonts-btn {
+  flex-shrink: 0 !important;
+  /* Удерживает фиксированные пропорции лава-кнопки */
+  /* height: 32px; */
+  /* Фиксированная аккуратная высота в один уровень с полями */
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  letter-spacing: 2px;
+
+}
+
+.fonts-btn:active {
+  /* 1. Тактильное сжатие: уменьшаем кнопку на 4% в момент клика */
+  transform: scale(0.96);
+
+  /* 2. Схлопывание энергии: неоновое свечение резко тускнеет и уходит вглубь */
+  text-shadow:
+    0 0 4px rgba(224, 255, 255, 0.9),
+    /* Бело-голубой эпицентр */
+    0 0 12px var(--cyan),
+    /* Плотное циановое тело */
+    0 0 30px rgba(0, 242, 255, 0.5);
+  /* Далёкое рассеивание фотонов */
+  /* 3. Эффект продавливания: чуть-чуть смещаем текст вниз на нано-уровень */
+  padding-top: 1px;
+
+  /* Микро-задержка для резкого, упругого отклика кнопки */
+  transition: transform 0.05s ease !important;
+}

@@ -1,0 +1,148 @@
+/* ---------------------------------------------- */
+
+.panel-glass {
+    pointer-events: none;
+    position: absolute;
+    z-index: 5;
+
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    /* Центрирует блок с заданной шириной */
+
+    /* Отступ сверху внутри контейнера */
+    top: 0;
+
+    transform: rotateX(1deg);
+    transform-style: preserve-3d;
+
+
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+
+    /* Тонкая вертикальная нить в центре */
+    height: 0;
+    width: 2px;
+    /* ЛОГИКА ЗАКРЫТИЯ (Схлопывание в центр) */
+    transition:
+        opacity 0.2s ease,
+        width 0.4s 0s cubic-bezier(0.4, 0, 0.2, 1),
+        /* Сначала ширина */
+        height 0.4s 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        /* Потом высота */
+        visibility 0s 0.8s;
+
+}
+
+/* 2. СОСТОЯНИЕ ACTIVE */
+.panel-glass.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+
+    width: 100%;
+    height: 100%;
+    height: calc(100% - 3px);
+
+    transition:
+        opacity 0.3s ease,
+        height 0.5s 0s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.5s 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s 0s;
+
+    overflow-y: auto;
+}
+
+/* .panel.active {
+    display: flex;
+    flex-direction: column;
+} */
+
+
+/* СТИЛИЗАЦИЯ СКРОЛЛА (под систему ARC-9) */
+.panel-glass::-webkit-scrollbar {
+    width: 4px;
+}
+
+.panel-glass::-webkit-scrollbar-thumb {
+    background: var(--glass);
+    box-shadow: 0 0 10px var(--glass-border);
+}
+
+/* Контент внутри */
+.panel-glass>* {
+    opacity: 0;
+    transition: opacity 0.3s 0s;
+}
+
+.panel-glass.active>* {
+    opacity: 1;
+    transition: opacity 0.3s 1s ease;
+    /* Появляется после раскрытия */
+}
+
+
+
+
+/* Этап 1: Лазер прочерчивает линию вниз */
+@keyframes laser-down {
+    from {
+        height: 0;
+        opacity: 0;
+        border-left-width: 2px;
+    }
+
+    to {
+        height: 400px;
+        opacity: 1;
+        border-left-width: 2px;
+    }
+}
+
+/* Этап 2: Панель вытягивается вправо из линии */
+@keyframes panel-spread {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 1000px;
+    }
+}
+
+@keyframes fade-in-content {
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* ********************************************************************** */
+/* ********************************************************************** */
+/* ********************************************************************** */
+/* ********************************************************************** */
+/* ********************************************************************** */
+
+
+.clickers {
+    border-left: 2px solid var(--ghost-sky);
+    border-right: 2px solid var(--ghost-sky);
+
+    background: linear-gradient(90deg, rgba(0, 242, 255, 0.05) 0%, transparent 100%);
+}
+
+.clickers.active {
+
+    border-radius: 6px;
+
+    /* height: min(58vh, 100% - var(--container-padding) * 2);
+  width: min(var(--container-width), 110% - var(--container-padding) * 2); */
+}
+
+
+/* ********************************************************************** */
+/* ********************************************************************** */
+/* ********************************************************************** */
+/* ********************************************************************** */
+/* ********************************************************************** */
