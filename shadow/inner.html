@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Shadow Perimeter</title>
+    
+    <!-- ПОДКЛЮЧАЕМ ЛОКАЛЬНЫЙ ФАЙЛ P5.JS ИЗ ТВОЕЙ ПАПКИ -->
+    <script src="/p5.js"></script>
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #ffffff;
+            font-family: sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        #ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        .instruction {
+            color: #1a1a1a;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .score {
+            color: #888888;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui-layer">
+        <p id="info-text" class="instruction">ЗАЖМИ ПАЛЕЦ В ЦЕНТРЕ</p>
+        <p id="score-text" class="score">Очки: 0 | Рекорд: 0</p>
+    </div>
+
+    <!-- ПОДКЛЮЧАЕМ ТВОЙ ЛОКАЛЬНЫЙ КОД ИГРЫ -->
+    <script src="/sketch.js"></script>
+
+</body>
+</html>
