@@ -1,5 +1,6 @@
 let isHolding = false;
 let score = 0;
+let savedScore = 0;
 let centerX, centerY;
 let shadows = [];
 let gameOver = false;
