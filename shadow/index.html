@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Shadow Perimeter</title>
+  <!-- Подключаем анимешные шрифты из Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Rubik+Glitch&family=Unbounded:wght@700;900&display=swap" rel="stylesheet">
+
+
+  <!-- ПОДКЛЮЧАЕМ ЛОКАЛЬНЫЙ ФАЙЛ P5.JS ИЗ ТВОЕЙ ПАПКИ -->
+  <script src="p5.js"></script>
+
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #ffffff;
+      font-family: 'Unbounded', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    /* Центральный слой интерфейса: теперь это стильный парящий островок */
+    #ui-layer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+      /* background: rgba(255, 255, 255, 0.4);  */
+      padding: 20px 35px;
+      /* border-radius: 24px; */
+      /* border: 1px solid rgba(0, 0, 0, 0.03); */
+      /* backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); */
+      transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+      z-index: 90;
+
+      /* Сдвигаем слой чуть выше или ниже, чтобы он не перекрывал саму кнопку тача */
+      margin-top: 130px;
+    }
+
+    /* Главная мистическая инструкция */
+    .instruction {
+      color: #1a1a1a;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      letter-spacing: 1px;
+      margin: 0;
+
+      /* Эффект объемной дымчатой тени */
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.05);
+      transition: all 0.4s ease;
+    }
+
+    /* Блок очков */
+    .score {
+      font-family: 'Unbounded', sans-serif;
+      color: rgba(10, 10, 10, 0.4);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin: 8px 0 0 0;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    /* --- ЭФФЕКТЫ ДЛЯ ПОГРУЖЕНИЯ В ТЕМНОТУ --- */
+
+    /* Когда игра активна (палец зажат), плавно растворяем интерфейс, чтобы видеть тени */
+    .game-active #ui-layer {
+      opacity: 0.15;
+      /* Оставляем текст едва заметным призраком */
+      transform: translate(-50%, -50%) scale(0.95);
+      background: rgba(255, 255, 255, 0);
+      border-color: rgba(0, 0, 0, 0);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      box-shadow: none;
+    }
+
+    /* При проигрыше убираем фон островка и делаем упор на зловещий красный текст */
+    .game-over #ui-layer {
+      opacity: 1;
+      background: rgba(0, 0, 0, 0);
+      border-color: rgba(0, 0, 0, 0);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      box-shadow: none;
+      margin-top: 0px;
+      /* Центрируем строго посреди экрана */
+    }
+
+    /* Когда срабатывает game-over, текст резко меняет шрифт на мистический глитч */
+    .game-over .instruction {
+      font-family: 'Rubik Glitch', system-ui;
+      font-size: 42px;
+      /* Делаем надпись "ПОЙМАН!" огромной и агрессивной */
+      letter-spacing: 4px;
+      /* Анимационный эффект: буквы слегка потряхивает при геймовере */
+      animation: glitchShake 0.3s infinite alternate;
+    }
+
+    /* Легкое дрожание для глитч-шрифта */
+    @keyframes glitchShake {
+      0% {
+        transform: skewX(-3deg) scale(1);
+      }
+
+      100% {
+        transform: skewX(3deg) scale(1.03);
+      }
+    }
+
+    #reset-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: none;
+      /* Полупрозрачный белый фон */
+      border: none;
+      border-radius: 50px;
+      /* Идеальный круг */
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(0, 0, 0, 0.4);
+      /* Неброский серый цвет иконки */
+      /* Модный эффект размытия под кнопкой */
+      transition: all 0.3s ease;
+      /* Плавные переходы */
+      z-index: 100;
+      /* Чтобы кнопка всегда была поверх канваса p5.js */
+      padding: 0;
+    }
+
+    /* Эффект при наведении (на ПК) */
+    @media (hover: hover) {
+      #reset-btn:hover {
+        /* Иконка мягко краснеет, предупреждая о сбросе */
+        transform: scale(1.15);
+        /* Легкое увеличение */
+      }
+    }
+
+    /* Анимация при самом нажатии (и на ПК, и на смартфонах) */
+    #reset-btn:active {
+      transform: scale(0.92);
+    }
+
+    #reset-btn svg {
+      width: 22px;
+      height: 22px;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Закручиваем стрелку при клике */
+    #reset-btn:active svg {
+      transform: rotate(-180deg);
+    }
+
+    /* Скрываем кнопку во время гейм-овера, чтобы не мешала */
+    .game-over #reset-btn {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Кнопка сброса рекорда -->
+  <button id="reset-btn" onclick="resetAllData()" title="reset best & clear progress">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+      <path
+        d="M12 4V1L8 5L12 9V6C15.31 6 18 8.69 18 12C18 13.01 17.75 13.97 17.3 14.8L18.8 16.3C19.57 15.05 20 13.58 20 12C20 7.58 16.42 4 12 4ZM12 18C8.69 18 6 15.31 6 12C6 10.99 6.25 10.03 6.7 9.2L5.2 7.7C4.43 8.95 4 10.42 4 12C4 16.42 7.58 20 12 20V23L16 19L12 15V18Z"
+        fill="currentColor" />
+    </svg>
+  </button>
+  <div id="ui-layer">
+    <p id="info-text" class="instruction">hold center <br> RELEASE TO DODGE SHADOWS!</p>
+    <p id="score-text" class="score">score: 0 | best: 0</p>
+  </div>
+
+  <!-- ПОДКЛЮЧАЕМ ТВОЙ ЛОКАЛЬНЫЙ КОД ИГРЫ -->
+  <script src="sketch.js"></script>
+
+</body>
+
+</html>
