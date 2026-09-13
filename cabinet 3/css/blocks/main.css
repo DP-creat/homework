@@ -1,0 +1,600 @@
+* {
+  margin: 0;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org' id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 10;
+  animation: noiseAnim 0.2s infinite;
+}
+
+@keyframes noiseAnim {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-1%, -1%);
+  }
+
+  20% {
+    transform: translate(1%, 1%);
+  }
+
+  30% {
+    transform: translate(1%, 1%);
+  }
+
+  40% {
+    transform: translate(1%, 1%);
+  }
+
+  50% {
+    transform: translate(1%, 1%);
+  }
+
+  60% {
+    transform: translate(1%, 1%);
+  }
+
+  70% {
+    transform: translate(1%, 1%);
+  }
+
+  80% {
+    transform: translate(1%, 1%);
+  }
+
+  90% {
+    transform: translate(1%, 1%);
+  }
+
+  100% {
+    transform: translate(1%, 1%);
+  }
+}
+
+#global-spark-canvas {
+  position: fixed;
+  /* Фиксируем на экране */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  /* КРИТИЧНО: клики будут проходить сквозь канвас на кнопки */
+  z-index: 1;
+  /* Кладем ПОД карточки, если искры — фон, или 10, если они — поверх */
+}
+
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  perspective: 1500px;
+  overflow: hidden;
+}
+
+.central-main {
+  padding: 3px;
+  height: min(80vh, 100% - var(--container-padding) * 2);
+  width: min(var(--container-width), 100% - var(--container-padding) * 2);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  transform: rotateX(1deg) rotateY(0deg);
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  /* Фикс для Chrome/Webkit: предотвращает размытие шрифтов и неона при 3D */
+  -webkit-font-smoothing: subpixel-antialiased;
+
+  background: radial-gradient(circle at center, var(--sky-cyan) -1000%, rgba(125, 249, 255, 0.01) -1000%);
+
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    0 -20px 110px 1px var(--ghost-sky),
+    inset 0 0 5px 2px rgba(2, 4, 10, 0.4),
+    inset 0 70px 8px rgba(224, 255, 255, 0.72);
+
+  /* border: 2px solid rgba(224, 255, 255, 0.2); */
+  border: 2px solid var(--ghost-sky);
+  /* z-index: 200; */
+  border-radius: 6px;
+}
+
+@media (max-height: 490px) {
+  .central-main {
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.5),
+      0 -20px 110px 1px var(--ghost-sky),
+      inset 0 0 5px 2px rgba(2, 4, 10, 0.4),
+      inset 0 40px 8px rgba(224, 255, 255, 0.72);
+  }
+}
+
+
+@media (pointer: coarse) {
+  .central-main {
+    height: min(90vh, 100% - var(--container-padding) * 2);
+    margin-top: 3vh;
+
+  }
+
+  /* .stealth {
+    display: none;
+  } */
+}
+
+
+
+.central-main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  /* background: linear-gradient(180deg, rgba(0, 242, 255, 0.251) 0%, transparent 100%); */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+/* @media (any-hover:hover) {
+  .central-panel {
+    transform: rotateX(0deg);
+    transform-style: preserve-3d;
+  }
+} */
+
+
+
+/* Ровно то пространство, где может быть контент */
+.glass-body {
+  position: relative;
+  flex: 1;
+  /* Занимает всё место от верха до футера */
+  width: 100%;
+  overflow: hidden;
+  /* Чтобы панель не вылезала за скругления */
+  display: flex;
+  flex-direction: column;
+  margin-bottom: clamp(12px, 2.5vh, 32px);
+}
+
+/* ************************* */
+
+.header-left-zone {
+  display: flex;
+  align-items: center;
+
+}
+/* Общий контейнер */
+.masc-toggle-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    background: rgba(2, 4, 10, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    width: fit-content;
+    user-select: none;
+}
+
+/* Моноширинный текст подписи */
+.toggle-label {
+    font-size: 10px;
+    font-family: monospace;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Оболочка ползунка */
+.switch-slider-box {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Скрываем системную галочку полностью */
+.switch-slider-box input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+/* Рельс (дорожка), по которой катится ползунок */
+.neon-slider-track {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Подвижный круглый бегунок ползунка */
+.neon-slider-track:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 2px;
+    bottom: 2px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    /* Анимация плавного перекатывания */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+/* --- СОСТОЯНИЕ: ПОЛЗУНОК ВКЛЮЧЕН (Смещается вправо и загорается) --- */
+.switch-slider-box input:checked + .neon-slider-track {
+    background-color: rgba(0, 255, 120, 0.1);
+    border-color: rgba(0, 255, 120, 0.4);
+    box-shadow: 0 0 10px rgba(0, 255, 120, 0.15);
+}
+
+/* Сдвиг бегунка в крайнее правое положение при включении */
+.switch-slider-box input:checked + .neon-slider-track:before {
+    transform: translateX(18px); /* Перекатываем круг вправо */
+    background-color: #00ff78; /* Окрашиваем в неоновый зеленый */
+    box-shadow: 0 0 8px rgba(0, 255, 120, 0.8);
+}
+
+/* ****************************************** */
+
+
+
+
+.central-header {
+  padding: clamp(8px, 2.5vh, 12px);
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-height: 490px) {
+  .central-header {
+    height: 40px;
+    padding: 4px;
+  }
+}
+
+
+.clickers__reset {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+
+  /* Базовое состояние: кнопки полностью невидимы и стеклянны */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    
+   /* Добавляем легкое смещение вверх на 10 пикселей в спящем состоянии */
+    transform: translateY(-10px) !important;
+    
+    transition: 
+        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0.4s allow-discrete !important;
+}
+/* ЕСЛИ ПАНЕЛЬ КЛИКЕРОВ АКТИВНА — ПРОЯВЛЯЕМ КНОПКИ СБРОСА */
+/* (Мы проверяем, есть ли в DOM-дереве активная панель кликеров, 
+    и если да — зажигаем блок .clickers__reset на 100%) */
+:root:has(.panel.clickers.active) .clickers__reset {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important; /* Возвращаем кнопкам возможность кликаться */
+
+    transform: translateY(0) !important; 
+}
+/* :root:has(.tool-cl-btn.active) .clickers__reset {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+
+    transform: translateY(0) !important; 
+} */
+
+.header-right-zone {
+  min-width: 130px;
+}
+
+@media (max-width: 490px) {
+  .clickers__reset {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    padding-inline: 10px;
+  }
+
+  .header-right-zone {
+    min-width: 100px;
+  }
+
+}
+
+/* ********************************************************* */
+/* ********************************************************* */
+/* ********************************************************* */
+/* ********************************************************* */
+
+.central-footer {
+  padding: clamp(4px, 1.5vh, 12px) clamp(8px, 2vw, 18px);
+
+  margin-bottom: clamp(12px, 3.5vh, 22px);
+  /* background: linear-gradient(180deg, transparent, rgba(224, 255, 255, 0.25)); */
+  /* border-top: 1px solid rgba(224, 255, 255, 0.1); */
+  /* Чтобы футер не казался приклеенным */
+  margin-top: auto;
+
+  /* Включаем сетку на 3 равные колонки */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  /* Выравнивает все элементы строго по одной горизонтальной линии */
+}
+
+.central-footer-z {
+  padding: clamp(4px, 1.5vh, 12px) clamp(8px, 2vw, 18px);
+
+  margin-bottom: clamp(12px, 10.5vh, 32px);
+
+}
+
+@media (max-height: 490px) {
+  .central-footer {
+    padding: 4px;
+    margin-bottom: 22px;
+    border-top: none;
+  }
+
+  .central-footer-z {
+    padding: 4px;
+    margin-bottom: 12px;
+  }
+
+}
+@media (max-width: 490px) {
+  .central-footer {
+    padding: 4px;
+    margin-bottom: 26px;
+    border-top: none;
+  }
+
+  .central-footer-z {
+    padding: 4px;
+    margin-bottom: 12px;
+  }
+
+}
+/* Стили для правого контейнера, смещающие кнопку к правому краю */
+.footer-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tool-dock {
+  display: flex;
+  gap: clamp(4px, 1.5vw, 12px);
+  justify-content: center;
+}
+
+.footer-btn {
+  width: 36px;
+  height: 36px;
+}
+
+@media (any-pointer: fine) {
+  .footer-btn {
+    width: 150px;
+  height: 50px;
+  }
+
+  
+}
+
+@media (max-height: 490px) {
+  .tool-dock {
+  margin-bottom: 12px;
+}
+
+}
+
+/* Стили для левого контейнера (просто резервирует место) */
+.footer-left {
+  display: flex;
+}
+@media (max-height: 490px) {
+  .footer-right {
+  margin-bottom: 10px;
+}}
+/* ********************************************************* */
+/* ********************************************************* */
+/* ********************************************************* */
+/* ********************************************************* */
+/* ********************************************************* */
+/* ********************************************************* */
+
+
+.light-pedestal {
+  width: min(var(--container-width), 100% - var(--container-padding) * 2);
+  /* Ширина такая же как у стекла */
+  height: 60px;
+  /* Увеличиваем высоту для объема */
+  background: linear-gradient(180deg, var(--ghost-sky) 0%, transparent 80%);
+
+  /* Кладем его "на пол" под углом */
+  transform: rotateX(75deg) translateY(-30px);
+
+  /* Мощное свечение под стеклом */
+  box-shadow:
+    0 -10px 40px var(--ghost-sky),
+    0 -20px 80px rgba(0, 242, 255, 0.3);
+
+  opacity: 0.8;
+  z-index: 1;
+  filter: blur(2px);
+  border-radius: 50% / 20%;
+}
+
+
+/* ***************************************** */
+/* ***************************************** */
+/* 1. Черный слой затенитель */
+.info-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  /* Глубокая тьма */
+  backdrop-filter: blur(10px);
+  z-index: 0;
+  /* Очень высоко */
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s ease;
+}
+
+/* 2. Слой с текстом */
+.info-layer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  /* Чуть ниже центра для эффекта */
+  width: min(500px, 90vw);
+  z-index: 1;
+  /* Еще выше затенителя */
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--ghost-sky);
+}
+
+/* 3. СОСТОЯНИЕ FOCUS (Когда всё включено) */
+body.info-focus-mode .info-overlay,
+body.info-focus-mode .info-layer {
+  opacity: 1;
+  visibility: visible;
+}
+
+body.info-focus-mode .info-layer {
+  transform: translate(-50%, -50%);
+}
+
+/* На всякий случай: если у тебя на central-panel стоит transform, 
+   при активации фокуса его можно временно упростить */
+body.info-focus-mode .central-panel {
+  transform: none;
+  /* Убирает наклон, чтобы z-index работал честно (опционально) */
+}
+
+/* 4. ВАЖНО: Объект, который должен "светиться" */
+/* Мы будем вешать этот класс на активный модуль через JS */
+/* Усиленный класс для "выхватывания" из тьмы */
+.bring-to-front {
+  position: relative;
+  z-index: 5;
+
+  /* ФИШКА: Заставляем браузер игнорировать старые контексты наложения */
+  isolation: isolate;
+
+  /* Убираем блюр и фильтры, если они были на родителе */
+  filter: none;
+  backdrop-filter: none;
+
+  /* Чтобы светился ярче на фоне тьмы */
+  box-shadow: 0 0 50px rgba(0, 242, 255, 0.4);
+  transition: all 0.5s ease;
+}
+
+/* ***************************************** */
+/* ***************************************** */
+/* ***************************************** */
+/* ***************************************** */
+
+/* Статичный дубликат панели */
+.static-panel-overlay {
+  /* Идеальное наложение поверх качающейся панели */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Точно копируем адаптивные размеры вашей .central-panel */
+  padding: 3px;
+  height: min(80vh, 100% - var(--container-padding) * 2);
+  width: min(var(--container-width), 100% - var(--container-padding) * 2);
+
+  /* Отключаем визуал, чтобы не перекрывать основную панель */
+  background: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+  /* Слой должен быть выше качающегося стекла */
+
+  /* Пропускаем клики сквозь пустое пространство контейнера */
+  pointer-events: none;
+}
+
+/* Медиа-запрос для мобилок: дублируем изменения высоты .central-panel */
+@media (pointer: coarse) {
+  .static-panel-overlay {
+    height: min(90vh, 100% - var(--container-padding) * 2);
+    transform: translate(-50%, calc(-50% + 1.5vh));
+    /* Учитываем margin-top: 3vh исходной панели */
+  }
+}
+
+/* Включаем клики обратно только для кнопок футера */
+.static-panel-overlay .central-footer {
+  pointer-events: auto;
+  width: 100%;
+  /* Занимает всю ширину статичной панели */
+  margin-top: auto;
+  /* Жестко прижимаем к низу */
+}
+
+/* Распорка, которая держит структуру внутри оверлея */
+.glass-body-spacer {
+  flex: 1;
+  width: 100%;
+  pointer-events: none;
+}

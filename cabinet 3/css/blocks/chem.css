@@ -1,0 +1,140 @@
+/* =======================================================
+   1. ГЛАВНЫЙ КОНТЕЙНЕР ОПРОСНИКА (#survey-wizard)
+======================================================= */
+#survey-wizard {
+    /* ЖЕЛЕЗНЫЙ ФИКС: убрали display: none! Теперь стартовая кнопка видна! */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: min(600px, 95%);
+    /* В спокойном состоянии (когда там только одна кнопка) делаем блок компактным, 
+       чтобы он не перекрывал чат и оставлял воздух */
+    height: auto; 
+    margin: 15px auto !important; /* Центрируем по горизонтали и делаем отступ до чата */
+    padding: 10px;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+/* КОГДА ОПРОСНИК АКТИВИРОВАН И ИДЕТ ТЕСТ (Класс добавляется через JS) */
+#survey-wizard.active {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Вот теперь, когда тест запущен, превращаем блок в полноценное 
+       полноразмерное окно на 85% высоты, заменяющее собой чат */
+    height: 85% !important; 
+    
+    background: rgba(2, 4, 10, 0.4);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 0, 85, 0.2); /* Наш маджента-контур */
+    border-radius: 8px;
+    box-shadow: inset 0 0 20px rgba(255, 0, 85, 0.05);
+    padding: 20px;
+}
+
+
+/* Коробка вопроса и результатов внутри шлюза */
+.chem-survey-box, .chem-results-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+.chem-progress {
+    font-family: var(--font-text, monospace);
+    font-size: 11px;
+    color: rgba(224, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.chem-question {
+    font-family: var(--font-text), monospace;
+    font-size: var(--fs-16, 1.1rem);
+    line-height: 1.4;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+}
+
+
+/* ВЕРТИКАЛЬНАЯ СТРУКТУРА ОТВЕТОВ (Полный фикс съезжания текста) */
+.chem-answers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: 15px;
+}
+/* Стилизация кнопок ответов под ваши десктопные/мобильные кнопки */
+/* КНОПКИ ОТВЕТОВ: Возвращаем нативную кликабельность и центрирование */
+.chem-ans-btn {
+    width: 100% !important;
+    height: auto !important;
+    padding: 14px 20px !important;
+    
+    pointer-events: all !important; /* Намертво разрешаем клики мышкой и тапы */
+    cursor: pointer !important;
+    
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box;
+}
+
+.chem-scores-summary {
+    font-family: var(--font-text, monospace);
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(224, 255, 255, 0.05);
+    color: var(--cyan);
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.chem-recommendations-list {
+    width: 100%;
+    max-height: 200px; /* Чтобы длинные советы не взрывали коробку */
+    overflow-y: auto !important; /* Вертикальная прокрутка для длинных рекомендаций */
+    padding-right: 5px;
+    margin-bottom: 10px;
+}
+/* --- ПОЛНЫЙ ФИКС НЕОНОВОГО КРУГОВОГО ТАЙМЕРА --- */
+.timer-svg {
+  transform: rotate(-90deg); /* Поворот, чтобы анимация шла сверху */
+  width: 100%;
+  height: 100%;
+}
+
+.timer-bg {
+  fill: transparent !important; /* НАМЕРТВО убираем черную заливку внутри! */
+  stroke: rgba(255, 255, 255, 0.05); /* Едва заметный фоновый контур */
+  stroke-width: 4;
+}
+
+.timer-bar {
+  fill: transparent !important; /* НАМЕРТВО убираем черную заливку! */
+  stroke: #ff0055 !important;    /* Яркий маджента-неон */
+  stroke-width: 4;
+  stroke-linecap: round;
+  
+  /* Жестко фиксируем длину окружности по формуле (2 * PI * r) для r=45 */
+  stroke-dasharray: 282.7; 
+  stroke-dashoffset: 0;
+  
+  transition: stroke-dashoffset 1s linear;
+  filter: drop-shadow(0 0 8px #ff0055); /* Неоновое свечение ободка */
+}

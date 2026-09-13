@@ -1,0 +1,178 @@
+
+/* Циферблат, который встроен в шапку */
+.core-value {
+    font-family: var(--font-body);
+    font-size: var(--fs-32);
+    color: var(--accent-2); 
+    text-shadow: 0 0 10px var(--accent-2);
+    z-index: 10; 
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    /* border: 1px solid var(--accent-2); */
+    /* border-radius: 50px; */
+    padding: 3px 5px 2px;
+}
+
+/* Яркий неон цифр при активации (Состояние 2 и 3) */
+.core-scanner.active .core-value,
+.core-scanner.running .core-value {
+    
+    /* color: #fff;
+    text-shadow: 0 0 12px var(--cyan), 0 0 25px var(--cyan); */
+}
+.core-scanner.active .core-value,
+.core-scanner.running .core-value {
+    /* 1. Заливаем сердцевину цифр чистым белым ядром */
+    color: var(--ghost-sky) !important;
+    
+    /* 2. Делаем лазерный неоновый контур по самым краям букв */
+    -webkit-text-stroke: 2px var(--glass-border);
+    
+    /* 3. Переключаем маску, чтобы контур плавно "втекал" внутрь геометрии */
+    background: transparent;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    
+    /* 4. Концентрированная тень, которая подсвечивает края изнутри и снаружи */
+    text-shadow: 
+        0 0 2px rgba(224, 255, 255, 0.72),
+        inset 0 0 8px rgba(224, 255, 255, 0.72);
+        
+    filter: drop-shadow(0 0 2px var(--ghost-sky));
+    border: 2px solid transparent;
+}
+/* ================================================================= */
+/* ЛАЗЕРНОЕ КОЛЬЦО: ПАРИТ ПОВЕРХ ХЕДЕРА (ЭКОНОМИЯ ПАМЯТИ ВО СНЕ) */
+/* ================================================================= */
+/*----------- Центральный Датчик (Встроен в шапку) ----------------*/
+.core-scanner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; 
+    /* padding: 10px 20px; */
+    color: var(--glass-border);
+    cursor: pointer;
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+}
+
+/* ================================================================= */
+/* ЭЛЕМЕНТ 1: ТЕ САМЫЕ РЕЛЬСЫ-ПОДЛОЖКА (ВИДНЫ ВСЕГДА В ШАПКЕ) */
+/* ================================================================= */
+.scan-rail {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 130px;
+    height: 130px;
+    transform: translate(-50%, -50%);
+    
+    /* Твой оригинальный базовый тусклый контур */
+    border: 2px solid transparent;
+    border-radius: 50%;
+    /* Обрезаем верх и низ, создавая форму двух аккуратных рельс по бокам */
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    
+    /* z-index: 40; */
+    pointer-events: none;
+    opacity: 0.25; /* Едва заметный технологичный контур во сне */
+    transition: opacity 0.3s ease;
+}
+
+/* Когда сканер просыпается, подложка тоже слегка подсвечивается */
+.core-scanner.active .scan-rail,
+.core-scanner.running .scan-rail {
+    opacity: 1;
+    border-color: var(--glass-border);
+}
+
+/* ================================================================= */
+/* ЭЛЕМЕНТ 2: ВНЕШНИЙ ЛАЗЕР (ВЗРЫВАЕТСЯ И ЕДЕТ ПО РЕЛЬСАМ) */
+/* ================================================================= */
+.scan-ring {
+    /* В режиме сна полностью выгружен из памяти и не жрет ресурсы */
+    display: none; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    width: 140px;
+    height: 140px;
+    transform: translate(-50%, -50%) scale(0); 
+    opacity: 0;
+
+    /* Твой оригинальный лазер */
+    border: 2px solid var(--accent-2);
+    border-radius: 50%;
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+    
+    z-index: 5; /* Парит над рельсами */
+    pointer-events: none; 
+    
+    transition: 
+        transform 0s, 
+        opacity 0s, 
+        display 0s allow-discrete;
+}
+
+/* СОСТОЯНИЕ 2: АКТИВАЦИЯ (Лазер вылетает и встает прямо поверх рельс) */
+.core-scanner.active .scan-ring {
+    display: block !important;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); 
+    
+    border-color: var(--accent-2);
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+    filter: drop-shadow(0 0 10px var(--accent)) !important;
+    
+    /* Красивый взрывной вылет из центра цифр за 0.4s */
+    transition: 
+        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+        opacity 0.4s ease;
+}
+
+/* СОСТОЯНИЕ 3: ЗАПУСК (Вращение внешнего кольца по рельсам) */
+.core-scanner.running .scan-ring {
+    display: block !important;
+    opacity: 1;
+    
+    border-color: var(--accent-2);
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+    filter: drop-shadow(0 0 10px var(--accent)) !important;
+
+    /* Лазер поехал крутиться по неподвижным рельсам подложки! */
+    animation: rotate-ring-holo 4s linear infinite !important;
+}
+
+@keyframes rotate-ring-holo {
+    from { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+    to { transform: translate(-50%, -50%) scale(1) rotate(360deg); }
+}
+
+/* Эффект вылета из микро-точки при активации */
+@starting-style {
+    .core-scanner.active .scan-ring {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.1); 
+    }
+}
+
+/* ================================================================= */
+/* АДАПТИВ ПОД ТАЧ */
+/* ================================================================= */
+@media (pointer: coarse) {
+    .scan-rail, .scan-ring {
+        width: 90px;
+        height: 90px;
+    }
+    .scan-rail {
+        width: 80px;
+        height: 80px;
+    }
+}

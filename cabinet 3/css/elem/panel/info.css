@@ -1,0 +1,17 @@
+/* Шторка, которая выезжает СЛЕВА */
+.panel.info-master {
+  position: fixed;
+  left: -100%; /* Спрятана за левым краем */
+  top: 0;
+  width: min(350px, 80vw);
+  height: 100vh;
+  background: rgba(2, 4, 10, 0.95);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid var(--ghost-sky);
+  transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+}
+
+.panel.info-master.active {
+  left: 0; /* Выехала */
+}

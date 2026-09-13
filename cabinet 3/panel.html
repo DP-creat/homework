@@ -1,0 +1,93 @@
+<!-- Кнопки управления -->
+<button onclick="togglePanel('log', { isExclusive: true, resetScroll: true, checkSelection: true })">
+  Открыть Логи
+</button>
+
+<button onclick="togglePanel('settings', { isExclusive: true })">
+  Настройки
+</button>
+
+<!-- Сами панели -->
+<div class="panel log">
+  <h2>Электронный журнал</h2>
+  <div class="content">Тут много текста...</div>
+</div>
+
+<div class="panel settings">
+  <h2>Настройки системы</h2>
+  <p>Параметры конфигурации...</p>
+</div>
+<!-- 1. isExclusive: true (Режим эксклюзивности / Аккордеон)Где живет: Внутри твоей функции togglePanel.Как отрабатывает: Когда ты нажимаешь на кнопку логов, цикл пробегает по DOM, находит другие открытые панели и гасит их. Но благодаря геометрическому фильтру !p.contains(target) && !target.contains(p), код понимает вложенность: он видит, что лог лежит внутри панели кликеров, признает их родственниками и НЕ закрывает внешнее окно. При этом, если была открыта какая-то посторонняя панель (например, Настройки), она закроется.
+ 
+2. resetScroll: true (Сброс прокрутки в начало)Где живет: Внутри твоей функции togglePanel.Как отрабатывает: Как только шторка логов получает команду на открытие и класс active становится равен true, строка target.scrollTop = 0 принудительно перематывает контент логов на самый верх. Это гарантирует, что пользователь всегда сразу видит самые свежие системные записи симуляции M.A.C.S.
+
+3. checkSelection: true (Защита от выделения текста)Где живет: И в togglePanel, и на перехвате в слушателе кликов.Как отрабатывает: Если ты выделил мышкой или пальцем кусок текста лог-записи, window.getSelection().toString().length становится больше нуля. И твой togglePanel, и блок closestActivePanel внутри слушателя кликов моментально делают return, блокируя схлопывание шторки. Текст можно спокойно копировать. -->
+
+<!-- Твои панели должны иметь общий класс .panel и уникальный класс с именем (например, .log или .settings). -->
+
+
+<!-- Секция ЗАВОД внутри панели -->
+<div class="panel-sub-module" data-info-anchor>
+  <!-- 1. То, что будет светиться (твой старый маяк) -->
+  <div class="factory-grid" data-info-target>...</div>
+
+  <!-- 2. То, что будет написано (вложено прямо сюда) -->
+  <template class="module-info">
+    <h3>ЗАВОД КЛИКЕРОВ</h3>
+    <p>Здесь происходит сборка юнитов...</p>
+  </template>
+
+  <button onclick="">Запустить завод</button>
+</div>
+
+
+
+
+<div class="mini-reset x-icon" onclick="window.resetSingleHardware(event, '${name}')" title="RESET COUNT">
+  <div class="m-line-v"></div>
+  <div class="m-line-h"></div>
+</div>
+<div class="delete-unit x-icon" onclick="window.deleteCell(event, '${name}')" title="DELETE UNIT">
+  <div class="d-line-v"></div>
+  <div class="d-line-h"></div>
+</div>
+<div class="circle-wrapper">
+  <svg class="cell-svg" width="140" height="140">
+    <circle class="circle-bg" cx="70" cy="70" r="${RADIUS}"></circle>
+    <circle id="circle-${name}" class="circle-progress" cx="70" cy="70" r="${RADIUS}"></circle>
+  </svg>
+  <div id="clock-${name}" class="log-clock"></div>
+</div>
+<div class="cell-header">
+  <div class="cell-label">${name}</div>
+  <div class="cell-val" id="count-${name}">0</div>
+</div>
+
+
+<div class="battery-cell awake active-focused-node" onclick="window.incrementHardware('${name}'); window.renderFocusedWindowHTML();">
+  <!-- УШКО 1: Сброс счетчика -->
+  <div class="mini-reset x-icon"
+    onclick="window.resetSingleHardware(event, '${name}'); window.renderFocusedWindowHTML();" title="RESET COUNT">
+    <div class="m-line-v"></div>
+    <div class="m-line-h"></div>
+  </div>
+  <!-- УШКО 2: Полное удаление -->
+  <div class="delete-unit x-icon" onclick="window.deleteCell(event, '${name}')" title="DELETE UNIT">
+    <div class="d-line-v"></div>
+    <div class="d-line-h"></div>
+  </div>
+  <div class="circle-wrapper">
+    <svg class="cell-svg" width="140" height="140">
+      <circle class="circle-bg" cx="70" cy="70" r="60"></circle>
+      <circle class="circle-progress" cx="70" cy="70" r="60"
+        style="stroke-dashoffset: ${offset}; stroke: ${progress >= 1 ? 'var(--glass-border)' : 'var(--cyan)'};">
+      </circle>
+    </svg>
+    <!-- Вшиваем точки прямо внутрь циферблата копии -->
+    <div class="log-clock active" id="focused-clock-${name}"></div>
+  </div>
+  <div class="cell-header">
+    <div class="cell-label">${name}</div>
+    <div class="cell-val">${currentCount}</div>
+  </div>
+</div>
